@@ -89,7 +89,7 @@ import static com.android.settings.deviceinfo.hardwareinfo.ModelPageMotion.SLOW_
  *   1. Device image    — LineageOS wiki (variant aware) > Evolution-X gitres >
  *                        Wikipedia; the image tile is hidden if none is found
  *   2. Maintainer card — sourced from:
- *        a) Evolution-X OTA JSON (official builds): github → avatar,
+ *        a) ExpressiveOS OTA JSON (official builds): github → avatar,
  *           maintainer → name, currently_maintained → badge, paypal → link.
  *           Tapping the card opens the GitHub profile; the Support button
  *           opens the donate URL (hidden when none is set).
@@ -98,9 +98,8 @@ import static com.android.settings.deviceinfo.hardwareinfo.ModelPageMotion.SLOW_
  *   3. OEM + specs card — OEM name from OTA JSON falling back to
  *                         ro.product.manufacturer.
  *
- * OTA JSON is resolved per-branch, trying OTA_BRANCHES in order (cnb, then
- * bka) so Android 17 CNB builds prefer the CNB OTA JSON and only fall back
- * to the legacy Android 16 bka branch if the device has no CNB entry yet.
+ * OTA JSON is resolved per-branch, trying OTA_BRANCHES in order. ExpressiveOS
+ * publishes every device's builds JSON on the main branch of its OTA repo.
  *
  * All network calls share a single-thread executor and a common LruCache so
  * device images are never fetched twice.
@@ -127,12 +126,11 @@ public class ModelPageController extends BasePreferenceController {
     // Lineage wiki names variant files <codename>_variant1 .. <codename>_variantN.
     private static final int LINEAGE_MAX_VARIANTS = 8;
     private static final String EVO_OTA_URL =
-            "https://raw.githubusercontent.com/Evolution-X/OTA/%s/builds/%s.json";
+            "https://raw.githubusercontent.com/denson9874/expressiveos_ota/%s/builds/%s.json";
 
-    // Branch lookup order for OTA JSON resolution. CNB (Android 17) is tried
-    // first; bka (Android 16) is the legacy fallback for devices that don't
-    // yet have a published CNB entry.
-    private static final String[] OTA_BRANCHES = { "cnb", "bka" };
+    // Branch lookup order for OTA JSON resolution. ExpressiveOS has a single
+    // feed on main.
+    private static final String[] OTA_BRANCHES = { "main" };
 
     // -------------------------------------------------------------------------
     // Disk-cache SharedPreferences name
@@ -1354,8 +1352,8 @@ public class ModelPageController extends BasePreferenceController {
 
     /**
      * Resolves OTA data for a single (branch, codename) pair. Cache keys are
-     * namespaced by branch so a cached miss/hit from one branch (e.g. bka)
-     * can never shadow a lookup against another branch (e.g. cnb).
+     * namespaced by branch so a cached miss/hit from one branch can never shadow a
+     * lookup against another branch.
      */
     private OtaEntry resolveOtaData(String branch, String codename) {
         String cacheSuffix = branch + "_" + codename;
