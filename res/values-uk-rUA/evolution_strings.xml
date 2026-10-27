@@ -4,8 +4,6 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Device Info screen. Evolution X legal. -->
-    <string name="evolution_license_title">Юридичні застереження Evolution X</string>
     <!-- Android version screen, build maintainer -->
     <string name="build_maintainer_label">Підтримується</string>
     <string name="build_maintainer">Розробник збірки</string>

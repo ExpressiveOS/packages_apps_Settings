@@ -72,7 +72,7 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
     private boolean mProcessingLastDevHit;
 
     public final static java.lang.String[] insults = {
-            "Evolution X > your personality",
+            "ExpressiveOS > your personality",
             "IT'S CLOBBERING TIME!",
             "Acknowledge me",
             "You flash ROMs more than you shower",
