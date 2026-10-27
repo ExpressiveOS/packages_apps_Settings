@@ -17,7 +17,7 @@ import com.android.settingslib.metadata.UI_ONLY_PREFERENCE
 import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.widget.LayoutPreference
 
-/** Evolution X logo banner on the Android version screen. Tapping opens the website. */
+/** ExpressiveOS logo banner on the Android version screen. Tapping opens the Telegram group. */
 class EvolutionXLogoPreference :
     PreferenceMetadata, PreferenceBinding, Preference.OnPreferenceClickListener {
 
@@ -59,6 +59,6 @@ class EvolutionXLogoPreference :
     companion object {
         const val KEY = "evolution_logo"
         private const val TAG = "EvolutionXLogoPref"
-        private const val WEBSITE_URL = "https://evolution-x.org/"
+        private const val WEBSITE_URL = "https://t.me/ExpressiveGroup"
     }
 }

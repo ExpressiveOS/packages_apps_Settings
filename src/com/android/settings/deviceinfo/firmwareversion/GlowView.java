@@ -26,7 +26,7 @@ import androidx.core.graphics.PathParser;
 import com.android.settings.R;
 
 /**
- * Draws the Evolution X wordmark with a K-pop holographic treatment: a pink,
+ * Draws the ExpressiveOS wordmark with a K-pop holographic treatment: a pink,
  * violet and cyan gradient sweeping across the outline, a soft neon glow with
  * a chromatic fringe, a periodic shine streak and a few twinkling sparkles.
  *
