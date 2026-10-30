@@ -20,6 +20,14 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:key="top_level_settings">
 
+    <!-- The holiday header, which the controller (Evolver's holiday themes) adds while a
+         holiday theme's Expressive Studio part is on -->
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:order="-160"
+        android:key="top_level_holiday_category"
+        settings:isPreferenceVisible="false"
+        settings:controller="org.evolution.settings.holiday.HolidayHeaderController"/>
+
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-150"
         android:key="top_level_account_category"/>
