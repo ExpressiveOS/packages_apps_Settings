@@ -35,7 +35,11 @@ import com.android.settings.R;
  * the fringe), light ones their deep tones.
  *
  * While a holiday theme's banner is on, the sweep and the fringe are in that
- * holiday's colours instead, read when the view is made (see KEY_HOLIDAY_PALETTE).
+ * holiday's colours instead, read when the view is made and again on
+ * restartAnimation() (see KEY_HOLIDAY_PALETTE).
+ *
+ * The animation loops for as long as the view shows, unless setAnimationLimit()
+ * stops it on a still frame.
  *
  * All geometry is expressed in the 1080x240 viewport of
  * ic_evolution_logo_outline and scaled to fit the view (centerInside).
@@ -72,7 +76,8 @@ public class GlowView extends View {
     private static final float GRAD_Y1 = 60f;
     private static final float GRAD_X2 = 890f;
     private static final float GRAD_Y2 = 180f;
-    private static final long  SWEEP_MS = 5000L;
+    // One sweep, as setAnimationLimit() takes it
+    public static final long   SWEEP_MS = 5000L;
 
     private static final float MAIN_STROKE   = 2.4f;
     private static final int   FILL_ALPHA    = 38;   // 15%
@@ -129,8 +134,10 @@ public class GlowView extends View {
     private float mScale;
     private float mOx;
     private float mOy;
+    private boolean mOnDark;
     private boolean mAnimate = true;
     private long mStartTime;
+    private long mAnimationLimit;
 
     public GlowView(Context ctx) {
         super(ctx);
@@ -150,22 +157,7 @@ public class GlowView extends View {
     private void init(Context ctx) {
         final int ink = resolveInk(ctx);
         // Light ink means a dark surface
-        final boolean onDark = Color.luminance(ink) > 0.5f;
-
-        // A holiday theme's colours while its banner is on, else Bloom's
-        final HolidayPalette holiday = readHolidayPalette(ctx);
-        final int fringeLeft;
-        final int fringeRight;
-        if (holiday != null) {
-            mHoloColors = onDark ? holiday.onDark : holiday.onLight;
-            final int[] fringe = onDark ? holiday.fringeOnDark : holiday.fringeOnLight;
-            fringeLeft = fringe[0];
-            fringeRight = fringe[1];
-        } else {
-            mHoloColors = onDark ? BLOOM_ON_DARK : BLOOM_ON_LIGHT;
-            fringeLeft = onDark ? FRINGE_LEFT_ON_DARK : FRINGE_LEFT_ON_LIGHT;
-            fringeRight = onDark ? FRINGE_RIGHT_ON_DARK : FRINGE_RIGHT_ON_LIGHT;
-        }
+        mOnDark = Color.luminance(ink) > 0.5f;
 
         for (String data : ctx.getResources().getStringArray(R.array.evolution_logo_paths)) {
             mLogoUnits.addPath(PathParser.createPathFromPathData(data));
@@ -184,13 +176,9 @@ public class GlowView extends View {
 
         mLeftFringePaint.setStyle(Paint.Style.STROKE);
         mLeftFringePaint.setStrokeJoin(Paint.Join.ROUND);
-        mLeftFringePaint.setColor(fringeLeft);
-        mLeftFringePaint.setAlpha(FRINGE_ALPHA);
 
         mRightFringePaint.setStyle(Paint.Style.STROKE);
         mRightFringePaint.setStrokeJoin(Paint.Join.ROUND);
-        mRightFringePaint.setColor(fringeRight);
-        mRightFringePaint.setAlpha(FRINGE_ALPHA);
 
         mFillPaint.setStyle(Paint.Style.FILL);
         mFillPaint.setAlpha(FILL_ALPHA);
@@ -209,6 +197,32 @@ public class GlowView extends View {
 
         mBandPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         mSparklePaint.setColor(ink);
+
+        applyPalette(ctx);
+    }
+
+    // A holiday theme's colours while its banner is on, else Bloom's: the sweep
+    // (the gradient is made from them when the view is sized) and the fringe
+    private void applyPalette(Context ctx) {
+        final HolidayPalette holiday = readHolidayPalette(ctx);
+        final int fringeLeft;
+        final int fringeRight;
+        if (holiday != null) {
+            mHoloColors = mOnDark ? holiday.onDark : holiday.onLight;
+            final int[] fringe = mOnDark ? holiday.fringeOnDark : holiday.fringeOnLight;
+            fringeLeft = fringe[0];
+            fringeRight = fringe[1];
+        } else {
+            mHoloColors = mOnDark ? BLOOM_ON_DARK : BLOOM_ON_LIGHT;
+            fringeLeft = mOnDark ? FRINGE_LEFT_ON_DARK : FRINGE_LEFT_ON_LIGHT;
+            fringeRight = mOnDark ? FRINGE_RIGHT_ON_DARK : FRINGE_RIGHT_ON_LIGHT;
+        }
+
+        // setColor sets the alpha too
+        mLeftFringePaint.setColor(fringeLeft);
+        mLeftFringePaint.setAlpha(FRINGE_ALPHA);
+        mRightFringePaint.setColor(fringeRight);
+        mRightFringePaint.setAlpha(FRINGE_ALPHA);
     }
 
     // Shine and sparkles follow the theme's primary text color: light on dark
@@ -281,6 +295,29 @@ public class GlowView extends View {
         return new int[] { colors[0], colors[1], colors[2], colors[3], colors[0] };
     }
 
+    /**
+     * Stops the animation ms after it starts (SWEEP_MS for one sweep) and holds
+     * that frame, without a shine or sparkle: one that wouldn't be over by then
+     * isn't started. It is also the still frame shown with animations off.
+     * 0, the default, loops for as long as the view shows.
+     */
+    public void setAnimationLimit(long ms) {
+        mAnimationLimit = Math.max(0L, ms);
+        invalidate();
+    }
+
+    /**
+     * Plays the animation again from the start, in the holiday colours as they
+     * are now.
+     */
+    public void restartAnimation() {
+        applyPalette(getContext());
+        if (mScale > 0f) rebuildHolo();
+        mAnimate = ValueAnimator.areAnimatorsEnabled();
+        mStartTime = SystemClock.uptimeMillis();
+        invalidate();
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -314,6 +351,10 @@ public class GlowView extends View {
         mStrokePaint.setStrokeWidth(MAIN_STROKE * mScale);
         mShineStroke.setStrokeWidth(MAIN_STROKE * mScale);
 
+        rebuildHolo();
+    }
+
+    private void rebuildHolo() {
         mHolo = new LinearGradient(
                 mOx + GRAD_X1 * mScale, mOy + GRAD_Y1 * mScale,
                 mOx + GRAD_X2 * mScale, mOy + GRAD_Y2 * mScale,
@@ -325,7 +366,10 @@ public class GlowView extends View {
     protected void onDraw(Canvas canvas) {
         if (mHolo == null || mScale <= 0f) return;
 
-        final long t = mAnimate ? SystemClock.uptimeMillis() - mStartTime : 0L;
+        long t = mAnimate ? SystemClock.uptimeMillis() - mStartTime : 0L;
+        // A limited animation holds its last frame, with animations off too
+        final boolean limited = mAnimationLimit > 0;
+        if (limited && (!mAnimate || t > mAnimationLimit)) t = mAnimationLimit;
 
         // Sweep the gradient along its own vector, which loops seamlessly.
         final float sweep = (t % SWEEP_MS) / (float) SWEEP_MS;
@@ -357,12 +401,12 @@ public class GlowView extends View {
         drawShine(canvas, t);
         drawSparkles(canvas, t);
 
-        if (mAnimate) postInvalidateOnAnimation();
+        if (mAnimate && (!limited || t < mAnimationLimit)) postInvalidateOnAnimation();
     }
 
     private void drawShine(Canvas canvas, long t) {
         final float p = (t % SHINE_MS) / (float) SHINE_MS;
-        if (p >= SHINE_ACTIVE) return;
+        if (p >= SHINE_ACTIVE || !endsInTime(t, SHINE_MS, SHINE_ACTIVE)) return;
 
         final float bx = SHINE_FROM + (SHINE_TO - SHINE_FROM) * (p / SHINE_ACTIVE);
 
@@ -387,13 +431,19 @@ public class GlowView extends View {
         final float p = (t % SPARKLE_MS) / (float) SPARKLE_MS;
         for (float[] s : SPARKLES) {
             final float k = pulse(p, s[3], s[4], s[5]) * s[2] * mScale;
-            if (k <= 0f) continue;
+            if (k <= 0f || !endsInTime(t, SPARKLE_MS, s[5])) continue;
             canvas.save();
             canvas.translate(mOx + s[0] * mScale, mOy + s[1] * mScale);
             canvas.scale(k, k);
             canvas.drawPath(mStar, mSparklePaint);
             canvas.restore();
         }
+    }
+
+    // Whether what ends at end (a fraction of period) in t's period is over by the
+    // animation limit, so the animation never stops on a half-lit shine or sparkle
+    private boolean endsInTime(long t, long period, float end) {
+        return mAnimationLimit <= 0 || t - t % period + (long) (end * period) <= mAnimationLimit;
     }
 
     // 0 at start and end, 1 at peak, linear in between
