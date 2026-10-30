@@ -19,6 +19,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -32,6 +33,9 @@ import com.android.settings.R;
  * glow with a blue and violet fringe, a periodic shine streak and a few
  * twinkling sparkles. Dark surfaces get the petals' mid tones (light tones for
  * the fringe), light ones their deep tones.
+ *
+ * While a holiday theme's banner is on, the sweep and the fringe are in that
+ * holiday's colours instead, read when the view is made (see KEY_HOLIDAY_PALETTE).
  *
  * All geometry is expressed in the 1080x240 viewport of
  * ic_evolution_logo_outline and scaled to fit the view (centerInside).
@@ -54,6 +58,13 @@ public class GlowView extends View {
     private static final int FRINGE_RIGHT_ON_DARK  = 0xFFF3B1FC;
     private static final int FRINGE_LEFT_ON_LIGHT  = 0xFF1842D1;
     private static final int FRINGE_RIGHT_ON_LIGHT = 0xFF6B2BBB;
+
+    // Settings.Secure key with the banner colours of the holiday theme that is
+    // on, written by the holiday themes and also read by the Updater's wordmark:
+    // "<id>;<sweep on dark>;<sweep on light>;<fringe on dark>;<fringe on light>",
+    // a sweep being 4 RRGGBB colours and a fringe 2 (left, right), split by ','.
+    // Unset, empty or anything else means the Bloom colours above.
+    private static final String KEY_HOLIDAY_PALETTE = "expressiveos_holiday_palette";
 
     // Gradient vector (viewport units). One sweep moves it by its own length,
     // so the repeating gradient loops seamlessly.
@@ -140,7 +151,21 @@ public class GlowView extends View {
         final int ink = resolveInk(ctx);
         // Light ink means a dark surface
         final boolean onDark = Color.luminance(ink) > 0.5f;
-        mHoloColors = onDark ? BLOOM_ON_DARK : BLOOM_ON_LIGHT;
+
+        // A holiday theme's colours while its banner is on, else Bloom's
+        final HolidayPalette holiday = readHolidayPalette(ctx);
+        final int fringeLeft;
+        final int fringeRight;
+        if (holiday != null) {
+            mHoloColors = onDark ? holiday.onDark : holiday.onLight;
+            final int[] fringe = onDark ? holiday.fringeOnDark : holiday.fringeOnLight;
+            fringeLeft = fringe[0];
+            fringeRight = fringe[1];
+        } else {
+            mHoloColors = onDark ? BLOOM_ON_DARK : BLOOM_ON_LIGHT;
+            fringeLeft = onDark ? FRINGE_LEFT_ON_DARK : FRINGE_LEFT_ON_LIGHT;
+            fringeRight = onDark ? FRINGE_RIGHT_ON_DARK : FRINGE_RIGHT_ON_LIGHT;
+        }
 
         for (String data : ctx.getResources().getStringArray(R.array.evolution_logo_paths)) {
             mLogoUnits.addPath(PathParser.createPathFromPathData(data));
@@ -159,12 +184,12 @@ public class GlowView extends View {
 
         mLeftFringePaint.setStyle(Paint.Style.STROKE);
         mLeftFringePaint.setStrokeJoin(Paint.Join.ROUND);
-        mLeftFringePaint.setColor(onDark ? FRINGE_LEFT_ON_DARK : FRINGE_LEFT_ON_LIGHT);
+        mLeftFringePaint.setColor(fringeLeft);
         mLeftFringePaint.setAlpha(FRINGE_ALPHA);
 
         mRightFringePaint.setStyle(Paint.Style.STROKE);
         mRightFringePaint.setStrokeJoin(Paint.Join.ROUND);
-        mRightFringePaint.setColor(onDark ? FRINGE_RIGHT_ON_DARK : FRINGE_RIGHT_ON_LIGHT);
+        mRightFringePaint.setColor(fringeRight);
         mRightFringePaint.setAlpha(FRINGE_ALPHA);
 
         mFillPaint.setStyle(Paint.Style.FILL);
@@ -196,6 +221,64 @@ public class GlowView extends View {
         } finally {
             a.recycle();
         }
+    }
+
+    // The KEY_HOLIDAY_PALETTE colours, or null (Bloom) when the key is unset or
+    // isn't exactly the five groups it should be.
+    private static HolidayPalette readHolidayPalette(Context ctx) {
+        final String value;
+        try {
+            value = Settings.Secure.getString(ctx.getContentResolver(), KEY_HOLIDAY_PALETTE);
+        } catch (RuntimeException e) {
+            return null;
+        }
+        if (value == null) return null;
+
+        // -1 keeps empty trailing groups, so "a;b;c;d;e;" counts as six
+        final String[] groups = value.trim().split(";", -1);
+        if (groups.length != 5 || groups[0].isEmpty() || groups[0].indexOf(',') >= 0) {
+            return null;
+        }
+        final int[] onDark = parseColors(groups[1], 4);
+        final int[] onLight = parseColors(groups[2], 4);
+        final int[] fringeOnDark = parseColors(groups[3], 2);
+        final int[] fringeOnLight = parseColors(groups[4], 2);
+        if (onDark == null || onLight == null || fringeOnDark == null || fringeOnLight == null) {
+            return null;
+        }
+        return new HolidayPalette(loop(onDark), loop(onLight), fringeOnDark, fringeOnLight);
+    }
+
+    // Exactly count opaque colours from RRGGBB hex split by ',', else null
+    private static int[] parseColors(String group, int count) {
+        final String[] parts = group.split(",", -1);
+        if (parts.length != count) return null;
+        final int[] colors = new int[count];
+        for (int i = 0; i < count; i++) {
+            final String part = parts[i];
+            if (part.length() != 6) return null;
+            int rgb = 0;
+            for (int j = 0; j < 6; j++) {
+                final int digit = hexDigit(part.charAt(j));
+                if (digit < 0) return null;
+                rgb = (rgb << 4) | digit;
+            }
+            colors[i] = 0xFF000000 | rgb;
+        }
+        return colors;
+    }
+
+    // Only ASCII hex digits (Character.digit also takes other scripts' digits)
+    private static int hexDigit(char c) {
+        if (c >= '0' && c <= '9') return c - '0';
+        if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+        if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+        return -1;
+    }
+
+    // The four sweep colours with the first repeated, for BLOOM_STOPS
+    private static int[] loop(int[] colors) {
+        return new int[] { colors[0], colors[1], colors[2], colors[3], colors[0] };
     }
 
     @Override
@@ -254,7 +337,7 @@ public class GlowView extends View {
         mFillPaint.setShader(mHolo);
         mStrokePaint.setShader(mHolo);
 
-        // Soft glow, then the blue/violet fringe
+        // Soft glow, then the fringe (blue and violet in Bloom)
         canvas.drawPath(mLogo, mGlowPaint);
 
         canvas.save();
@@ -322,5 +405,20 @@ public class GlowView extends View {
     // BlurMaskFilter takes a radius, Skia converts it with sigma = 0.57735 * r + 0.5
     private static float blurRadius(float sigma) {
         return Math.max(1f, (sigma - 0.5f) / 0.57735f);
+    }
+
+    // A holiday theme's banner colours: 5-stop sweeps and { left, right } fringes
+    private static final class HolidayPalette {
+        final int[] onDark;
+        final int[] onLight;
+        final int[] fringeOnDark;
+        final int[] fringeOnLight;
+
+        HolidayPalette(int[] onDark, int[] onLight, int[] fringeOnDark, int[] fringeOnLight) {
+            this.onDark = onDark;
+            this.onLight = onLight;
+            this.fringeOnDark = fringeOnDark;
+            this.fringeOnLight = fringeOnLight;
+        }
     }
 }

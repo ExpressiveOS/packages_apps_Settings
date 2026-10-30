@@ -3906,6 +3906,23 @@
             </intent-filter>
         </receiver>
 
+        <!-- ExpressiveOS holiday themes: re-check the date after boot, clock and time zone
+             changes and updates, and handle the theme's own alarm and "Skip this year" -->
+        <receiver
+            android:name="org.evolution.settings.holiday.HolidayReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="org.evolution.settings.holiday.HolidayActionReceiver"
+            android:exported="false" />
+
         <receiver
             android:name=".fuelgauge.BatterySettingsMigrateChecker"
             android:exported="true">
