@@ -86,7 +86,7 @@ import static com.android.settings.deviceinfo.hardwareinfo.ModelPageMotion.SLOW_
  * Unified controller for the hardware info card layout.
  *
  * Owns three visual sections, all inside preference_hardware_info.xml:
- *   1. Device image    — LineageOS wiki (variant aware) > Evolution-X gitres >
+ *   1. Device image    — LineageOS wiki (variant aware) > ExpressiveOS feed repo >
  *                        Wikipedia; the image tile is hidden if none is found
  *   2. Maintainer card — sourced from:
  *        a) ExpressiveOS OTA JSON (official builds): github → avatar,
@@ -112,8 +112,8 @@ public class ModelPageController extends BasePreferenceController {
     // URL templates
     // -------------------------------------------------------------------------
 
-    private static final String EVO_IMAGE_URL =
-            "https://raw.githubusercontent.com/Evolution-X/www_gitres/main/devices/images/%s.webp";
+    private static final String EOS_IMAGE_URL =
+            "https://raw.githubusercontent.com/denson9874/expressiveos_ota/main/devices/images/%s.webp";
     private static final String LINEAGE_IMAGE_URL =
             "https://raw.githubusercontent.com/LineageOS/lineage_wiki/main/images/devices/%s";
     private static final String LINEAGE_DEVICE_YML_URL =
@@ -275,7 +275,7 @@ public class ModelPageController extends BasePreferenceController {
             return;
         }
 
-        // ── Step 3: network (LineageOS variant -> EVO -> Wikipedia) ──────────
+        // ── Step 3: network (LineageOS variant -> ExpressiveOS -> Wikipedia) ──────────
         if (mExecutor.isShutdown()) return;
         if (knownOem.equalsIgnoreCase(mImageTriedOem)) return; // in flight / already failed
         if (mImageAttempts >= MAX_IMAGE_ATTEMPTS) return;
@@ -290,7 +290,7 @@ public class ModelPageController extends BasePreferenceController {
             final String lineageUrl = resolveLineageImageUrl(codename, oem);
             if (lineageUrl != null) bmp = NetworkUtils.fetchBitmap(lineageUrl);
             if (bmp == null && !mDestroyed) {
-                bmp = NetworkUtils.fetchBitmap(String.format(EVO_IMAGE_URL, codename));
+                bmp = NetworkUtils.fetchBitmap(String.format(EOS_IMAGE_URL, codename));
             }
             if (bmp == null && !mDestroyed) bmp = fetchWikipediaImage(oem);
             final Bitmap result = bmp;
