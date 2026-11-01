@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
-import android.os.SystemProperties
 import android.os.UserHandle
 import android.os.UserManager
 import androidx.preference.Preference
@@ -66,7 +65,7 @@ class LineageVersionDetailPreference :
     }
 
     override fun getSummary(context: Context): CharSequence =
-        SystemProperties.get(LINEAGE_VERSION_PROPERTY, context.getString(R.string.unknown));
+        RomBuildProp.get(LINEAGE_VERSION_PROPERTY, context.getString(R.string.unknown));
 
     // return true swallows the click event, while return false will start the intent
     override fun onPreferenceClick(preference: Preference): Boolean {
