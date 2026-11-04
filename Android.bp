@@ -65,8 +65,6 @@ android_library {
     javac_shard_size: 50,
     use_resource_processor: true,
 
-    aaptflags: ["--extra-packages org.evolution.settings"],
-
     resource_dirs: [
         "res",
         "res-export", // for external usage
