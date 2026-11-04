@@ -6387,7 +6387,7 @@
             </intent-filter>
         </activity>
 
-        <!-- The Evolver -->
+        <!-- Expressive Studio -->
         <activity android:name="Settings$EvolutionSettingsActivity"
                   android:label="@string/evolver_dashboard_title"
                   android:exported="true">
