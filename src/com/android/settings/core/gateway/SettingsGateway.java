@@ -496,7 +496,7 @@ public class SettingsGateway {
             Settings.MemtagPageActivity.class.getName(),
             Settings.NavigationModeSettingsActivity.class.getName(),
             Settings.ShadeSettingsActivity.class.getName(),
-            // Evolution X additions
+            // ExpressiveOS additions
             Settings.PrivateDnsSettingsActivity.class.getName(),
             Settings.SmartPixelsActivity.class.getName(),
             Settings.DevRunningServicesActivity.class.getName(),
