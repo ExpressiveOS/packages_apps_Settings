@@ -18,7 +18,7 @@ import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.widget.LayoutPreference
 
 /** ExpressiveOS logo banner on the Android version screen. Tapping opens the Telegram group. */
-class EvolutionXLogoPreference :
+class ExpressiveOSLogoPreference :
     PreferenceMetadata, PreferenceBinding, Preference.OnPreferenceClickListener {
 
     override val key: String
@@ -58,7 +58,7 @@ class EvolutionXLogoPreference :
 
     companion object {
         const val KEY = "evolution_logo"
-        private const val TAG = "EvolutionXLogoPref"
+        private const val TAG = "ExpressiveOSLogoPref"
         private const val WEBSITE_URL = "https://t.me/ExpressiveGroup"
     }
 }
