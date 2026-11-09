@@ -37,7 +37,6 @@
         android:dependency="clipboard_auto_clear_enabled"
         android:entries="@array/clipboard_auto_clear_timeout_entries"
         android:entryValues="@array/clipboard_auto_clear_timeout_values"
-        android:defaultValue="3600000"
-        settings:controller="com.android.settings.custom.privacy.ClipboardAutoClearTimeoutPreferenceController" />
+        android:defaultValue="3600000" />
 
 </PreferenceScreen>
