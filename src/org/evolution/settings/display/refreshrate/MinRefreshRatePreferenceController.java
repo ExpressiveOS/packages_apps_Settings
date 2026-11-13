@@ -64,6 +64,10 @@ public class MinRefreshRatePreferenceController extends BasePreferenceController
         final List<String> entries = new ArrayList<>();
         final List<String> values = new ArrayList<>();
 
+        // No floor: the display picks any rate it supports (down to 1 Hz on variable-refresh panels)
+        entries.add(mContext.getString(R.string.min_refresh_rate_adaptive));
+        values.add(String.valueOf(DisplayRefreshRateHelper.ADAPTIVE_REFRESH_RATE));
+
         for (int i = 0; i < mSupportedList.size(); ++i) {
             final String refreshRate = String.valueOf(mSupportedList.get(i));
             entries.add(refreshRate + " Hz");
