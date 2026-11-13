@@ -23,6 +23,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.internal.util.evolution.DisplayRefreshRateHelper;
 
+import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
@@ -88,6 +89,9 @@ public class ScreenRefreshRateController extends BasePreferenceController implem
         if (extremeMode && supportedList.size() > 0) {
             final int maxAllowed = supportedList.get(supportedList.size() - 1);
             summary = String.valueOf(maxAllowed) + " Hz";
+        } else if (minRefreshRate == DisplayRefreshRateHelper.ADAPTIVE_REFRESH_RATE) {
+            summary = mContext.getString(R.string.screen_refresh_rate_adaptive_summary,
+                    maxRefreshRate);
         } else if (minRefreshRate == maxRefreshRate) {
             summary = String.valueOf(maxRefreshRate) + " Hz";
         } else {
