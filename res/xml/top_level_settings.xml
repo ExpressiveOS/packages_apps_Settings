@@ -28,17 +28,17 @@
 
     <PreferenceCategory
         android:order="-135"
-        android:key="top_level_evolution_category"
+        android:key="top_level_expressiveos_category"
         android:layout="@layout/settingslib_expressive_untitled_preference_category">
         <com.android.settings.widget.HomepagePreference
-            android:fragment="org.evolution.settings.EvolutionSettings"
-            android:icon="@drawable/ic_settings_evolution_filled"
-            android:key="top_level_evolver"
+            android:fragment="org.expressiveos.settings.ExpressiveStudioSettings"
+            android:icon="@drawable/ic_settings_expressiveos_filled"
+            android:key="top_level_expressive_studio"
             android:order="-160"
-            android:title="@string/evolver_dashboard_title"
-            android:summary="@string/evolver_dashboard_summary"
-            settings:highlightableMenuKey="@string/menu_key_evolver"
-            settings:controller="org.evolution.settings.TopLevelEvolutionSettingsPreferenceController"/>
+            android:title="@string/studio_dashboard_title"
+            android:summary="@string/studio_dashboard_summary"
+            settings:highlightableMenuKey="@string/menu_key_expressive_studio"
+            settings:controller="org.expressiveos.settings.TopLevelExpressiveStudioPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory

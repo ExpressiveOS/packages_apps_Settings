@@ -78,13 +78,13 @@ import com.android.internal.widget.LockPatternView
 import com.android.settings.R
 import com.android.settings.SettingsPreferenceFragment
 import com.android.settingslib.spa.framework.theme.SettingsTheme
-import org.evolution.settings.fragments.miscellaneous.ExpressiveChoiceRow
-import org.evolution.settings.fragments.miscellaneous.ExpressiveDialog
-import org.evolution.settings.fragments.miscellaneous.ExpressiveGroup
-import org.evolution.settings.fragments.miscellaneous.ExpressiveTextButton
-import org.evolution.settings.fragments.miscellaneous.ExpressiveTextField
-import org.evolution.settings.fragments.miscellaneous.expressiveVerticalScroll
-import org.evolution.settings.fragments.miscellaneous.radioButtonFocusRing
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveChoiceRow
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveDialog
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveGroup
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveTextButton
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveTextField
+import org.expressiveos.settings.fragments.miscellaneous.expressiveVerticalScroll
+import org.expressiveos.settings.fragments.miscellaneous.radioButtonFocusRing
 
 import android.app.Activity
 import android.content.Intent

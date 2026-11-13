@@ -25,7 +25,7 @@ class ExpressiveOSLogoPreference :
         get() = KEY
 
     override val purpose: Int
-        get() = R.string.evolution_logo_purpose
+        get() = R.string.expressiveos_logo_purpose
 
     override val indexable
         get() = false
@@ -33,14 +33,14 @@ class ExpressiveOSLogoPreference :
     override fun tags(context: Context) = arrayOf(UI_ONLY_PREFERENCE)
 
     override fun createWidget(context: Context): Preference =
-        LayoutPreference(context, R.layout.evolution_logo)
+        LayoutPreference(context, R.layout.expressiveos_logo)
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
         // GlowView resolves its own ink color from the current theme.
         (preference as? LayoutPreference)
-            ?.findViewById<View>(R.id.evolution_logo_container)
-            ?.let { EvolutionLogoAnimator.bind(it) }
+            ?.findViewById<View>(R.id.expressiveos_logo_container)
+            ?.let { ExpressiveLogoAnimator.bind(it) }
         preference.onPreferenceClickListener = this
     }
 
@@ -57,7 +57,7 @@ class ExpressiveOSLogoPreference :
     }
 
     companion object {
-        const val KEY = "evolution_logo"
+        const val KEY = "expressiveos_logo"
         private const val TAG = "ExpressiveOSLogoPref"
         private const val WEBSITE_URL = "https://t.me/ExpressiveGroup"
     }

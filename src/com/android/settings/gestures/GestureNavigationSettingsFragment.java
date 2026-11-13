@@ -34,7 +34,7 @@ import android.view.WindowManager;
 
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.android.internal.util.evolution.Utils;
+import com.android.internal.util.expressiveos.Utils;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -50,8 +50,8 @@ import java.util.Locale;
 
 import lineageos.preference.LineageSystemSettingSwitchPreference;
 
-import org.evolution.settings.preferences.SecureSettingSwitchPreference;
-import org.evolution.settings.utils.DeviceUtils;
+import org.expressiveos.settings.preferences.SecureSettingSwitchPreference;
+import org.expressiveos.settings.utils.DeviceUtils;
 
 /**
  * A fragment to include all the settings related to Gesture Navigation mode.

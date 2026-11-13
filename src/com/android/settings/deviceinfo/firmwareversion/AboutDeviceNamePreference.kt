@@ -50,7 +50,7 @@ class AboutDeviceNamePreference :
     override fun intent(context: Context): Intent? =
         Intent().setClassName(
             "com.android.settings",
-            "org.evolution.settings.fragments.about.ChangelogActivity",
+            "org.expressiveos.settings.fragments.about.ChangelogActivity",
         )
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {

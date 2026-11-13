@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.fragment;
+package org.expressiveos.settings.fragment;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;

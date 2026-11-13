@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.display.refreshrate;
+package org.expressiveos.settings.display.refreshrate;
 
 import static android.provider.Settings.System.EXTREME_REFRESH_RATE;
 
@@ -14,7 +14,7 @@ import android.provider.Settings;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import com.android.internal.util.evolution.DisplayRefreshRateHelper;
+import com.android.internal.util.expressiveos.DisplayRefreshRateHelper;
 
 import com.android.settings.core.BasePreferenceController;
 

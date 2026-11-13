@@ -103,13 +103,13 @@
             android:fragment="com.android.settings.display.ScreenTimeoutSettings"
             settings:controller="com.android.settings.display.ScreenTimeoutPreferenceController"/>
 
-        <org.evolution.settings.preferences.SystemSettingSwitchPreference
+        <org.expressiveos.settings.preferences.SystemSettingSwitchPreference
             android:key="pocket_judge"
             android:title="@string/proximity_wake_title"
             android:summary="@string/proximity_wake_summary"
             settings:requiresConfig="@*android:bool/config_pocketModeSupported" />
 
-        <org.evolution.settings.preferences.DeviceConfigSwitchPreference
+        <org.expressiveos.settings.preferences.DeviceConfigSwitchPreference
             android:key="flip_to_screen_off"
             android:title="@string/face_down_sleep_title"
             android:summary="@string/face_down_sleep_summary"
@@ -222,8 +222,8 @@
         <Preference
             android:key="screen_refresh_rate"
             android:title="@string/screen_refresh_rate_title"
-            android:fragment="org.evolution.settings.display.refreshrate.ScreenRefreshRateFragment"
-            settings:controller="org.evolution.settings.display.refreshrate.ScreenRefreshRateController"/>
+            android:fragment="org.expressiveos.settings.display.refreshrate.ScreenRefreshRateFragment"
+            settings:controller="org.expressiveos.settings.display.refreshrate.ScreenRefreshRateController"/>
 
         <SwitchPreferenceCompat
             android:key="display_white_balance"

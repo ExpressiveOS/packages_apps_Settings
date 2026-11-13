@@ -106,7 +106,7 @@ class LineageVersionDetailPreference :
 
         const val LINEAGE_VERSION_PROPERTY: String = "ro.modversion"
 
-        const val PLATLOGO_PACKAGE_NAME: String = "org.evolution.easteregg"
+        const val PLATLOGO_PACKAGE_NAME: String = "org.expressiveos.easteregg"
         const val PLATLOGO_ACTIVITY_CLASS: String = PLATLOGO_PACKAGE_NAME + ".EasterEgg"
     }
 }

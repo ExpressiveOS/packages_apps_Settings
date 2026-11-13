@@ -102,7 +102,7 @@
         settings:controller="com.android.settings.display.AmbientDisplayWhenToShowPreferenceController"
         android:order="1000">
 
-        <org.evolution.settings.preferences.SecureSettingSwitchPreference
+        <org.expressiveos.settings.preferences.SecureSettingSwitchPreference
             android:key="doze_on_charge"
             android:title="@string/doze_on_charge_title"
             android:summary="@string/doze_on_charge_summary"
@@ -114,7 +114,7 @@
             android:fragment="com.android.settings.display.AODSchedule"
             settings:controller="com.android.settings.display.AODSchedulePreferenceController" />
 
-        <org.evolution.settings.preferences.SecureSettingSwitchPreference
+        <org.expressiveos.settings.preferences.SecureSettingSwitchPreference
             android:key="pulse_on_new_tracks"
             android:title="@string/pulse_on_new_tracks_title"
             android:summary="@string/pulse_on_new_tracks_summary"
@@ -147,7 +147,7 @@
             android:summary="@string/doze_summary"
             settings:controller="com.android.settings.display.AmbientDisplayNotificationsPreferenceController" />
 
-        <org.evolution.settings.preferences.SystemSettingSeekBarPreference
+        <org.expressiveos.settings.preferences.SystemSettingSeekBarPreference
             android:key="doze_brightness"
             android:title="@string/ambient_doze_brightness_title"
             android:max="255"
@@ -155,7 +155,7 @@
             android:persistent="false"
             settings:controller="com.android.settings.display.DozeBrightnessPreferenceController" />
 
-        <org.evolution.settings.preferences.SystemSettingSeekBarPreference
+        <org.expressiveos.settings.preferences.SystemSettingSeekBarPreference
             android:key="pulse_brightness"
             android:title="@string/ambient_pulse_brightness_title"
             android:max="255"
@@ -163,7 +163,7 @@
             android:persistent="false"
             settings:controller="com.android.settings.display.DozeBrightnessPreferenceController" />
 
-        <org.evolution.settings.preferences.SystemSettingSwitchPreference
+        <org.expressiveos.settings.preferences.SystemSettingSwitchPreference
             android:key="doze_brightness_force"
             android:title="@string/doze_brightness_force_title"
             android:summary="@string/doze_brightness_force_summary"

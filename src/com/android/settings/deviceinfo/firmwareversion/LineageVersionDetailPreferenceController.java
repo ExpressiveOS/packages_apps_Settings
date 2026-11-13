@@ -43,7 +43,7 @@ public class LineageVersionDetailPreferenceController extends BasePreferenceCont
 
     private static final String KEY_LINEAGE_VERSION_PROP = "ro.modversion";
 
-    private static final String PLATLOGO_PACKAGE_NAME = "org.evolution.easteregg";
+    private static final String PLATLOGO_PACKAGE_NAME = "org.expressiveos.easteregg";
     private static final String PLATLOGO_ACTIVITY_CLASS =
             PLATLOGO_PACKAGE_NAME + ".EasterEgg";
 

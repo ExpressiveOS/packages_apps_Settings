@@ -26,7 +26,7 @@
         app:searchable="false"
         app:lottie_rawRes="@raw/lottie_tap_to_check_phone"/>
 
-    <org.evolution.settings.preferences.SystemSettingSwitchPreference
+    <org.expressiveos.settings.preferences.SystemSettingSwitchPreference
         android:key="doze_trigger_doubletap"
         android:title="@string/doze_double_tap_title"
         android:summary="@string/doze_double_tap_summary"

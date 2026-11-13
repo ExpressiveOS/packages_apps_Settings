@@ -26,7 +26,7 @@
         android:order="-160"
         android:key="top_level_holiday_category"
         settings:isPreferenceVisible="false"
-        settings:controller="org.evolution.settings.holiday.HolidayHeaderController"/>
+        settings:controller="org.expressiveos.settings.holiday.HolidayHeaderController"/>
 
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-150"
@@ -34,16 +34,16 @@
 
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-140"
-        android:key="top_level_evolution_category">
+        android:key="top_level_expressiveos_category">
         <com.android.settings.widget.HomepagePreference
-            android:fragment="org.evolution.settings.EvolutionSettings"
-            android:icon="@drawable/ic_homepage_evolution"
-            android:key="top_level_evolver"
+            android:fragment="org.expressiveos.settings.ExpressiveStudioSettings"
+            android:icon="@drawable/ic_homepage_expressiveos"
+            android:key="top_level_expressive_studio"
             android:order="-160"
-            android:title="@string/evolver_dashboard_title"
-            android:summary="@string/evolver_dashboard_summary"
-            settings:highlightableMenuKey="@string/menu_key_evolver"
-            settings:controller="org.evolution.settings.TopLevelEvolutionSettingsPreferenceController"/>
+            android:title="@string/studio_dashboard_title"
+            android:summary="@string/studio_dashboard_summary"
+            settings:highlightableMenuKey="@string/menu_key_expressive_studio"
+            settings:controller="org.expressiveos.settings.TopLevelExpressiveStudioPreferenceController"/>
     </com.android.settingslib.widget.UntitledPreferenceCategory>
 
     <com.android.settingslib.widget.UntitledPreferenceCategory
