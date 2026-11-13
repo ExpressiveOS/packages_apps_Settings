@@ -55,11 +55,11 @@ import com.android.settings.deviceinfo.batteryinfo.BatteryDesignCapacityPreferen
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settingslib.widget.LayoutPreference;
 
-import org.evolution.settings.fragments.about.GithubAvatarLoader;
-import org.evolution.settings.utils.HttpCachePrefs;
-import org.evolution.settings.utils.NetworkUtils;
-import org.evolution.settings.utils.OtaEntry;
-import org.evolution.settings.utils.UrlUtils;
+import org.expressiveos.settings.fragments.about.GithubAvatarLoader;
+import org.expressiveos.settings.utils.HttpCachePrefs;
+import org.expressiveos.settings.utils.NetworkUtils;
+import org.expressiveos.settings.utils.OtaEntry;
+import org.expressiveos.settings.utils.UrlUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -136,7 +136,7 @@ public class ModelPageController extends BasePreferenceController {
     // Disk-cache SharedPreferences name
     // -------------------------------------------------------------------------
 
-    private static final String PREFS_NAME            = "evolution_maintainer_cache";
+    private static final String PREFS_NAME            = "expressiveos_maintainer_cache";
     private static final int    CACHE_VERSION          = 3;
     private static final String KEY_CACHE_VERSION      = "cache_version";
     private static final String KEY_HAS_ENTRY_PREFIX   = "has_entry_";
@@ -177,6 +177,8 @@ public class ModelPageController extends BasePreferenceController {
 
     public ModelPageController(Context context, String key) {
         super(context, key);
+        // The cache had another name through 1.2; it is only a cache, so drop the old file.
+        context.deleteSharedPreferences("evolution_maintainer_cache");
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         clearOutdatedCache();
     }

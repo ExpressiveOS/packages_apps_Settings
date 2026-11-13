@@ -3,19 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.display.refreshrate;
+package org.expressiveos.settings.display.refreshrate;
 
 import android.os.Bundle;
 
-import com.android.internal.util.evolution.DisplayRefreshRateHelper;
+import com.android.internal.util.expressiveos.DisplayRefreshRateHelper;
 
 import com.android.settings.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.evolution.display.RefreshRateManager;
-import org.evolution.settings.fragment.PerAppListConfigFragment;
+import org.expressiveos.display.RefreshRateManager;
+import org.expressiveos.settings.fragment.PerAppListConfigFragment;
 
 public class PerAppRefreshRateFragment extends PerAppListConfigFragment {
 

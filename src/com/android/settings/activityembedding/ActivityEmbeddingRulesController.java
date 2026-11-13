@@ -228,7 +228,7 @@ public class ActivityEmbeddingRulesController {
         addActivityFilter(activityFilters, SettingsHomepageActivity.class);
         addActivityFilter(activityFilters, Settings.class);
 
-        final Intent intent = new Intent(mContext, Settings.EvolutionSettingsActivity.class);
+        final Intent intent = new Intent(mContext, Settings.ExpressiveStudioActivity.class);
         intent.putExtra(SettingsActivity.EXTRA_IS_SECOND_LAYER_PAGE, true);
         SplitAttributes attributes = new SplitAttributes.Builder()
                 .setSplitType(SplitAttributes.SplitType.ratio(

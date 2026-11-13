@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.evolution.settings.display.refreshrate;
+package org.expressiveos.settings.display.refreshrate;
 
 import static android.provider.Settings.System.EXTREME_REFRESH_RATE;
 
@@ -27,7 +27,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import com.android.internal.util.evolution.DisplayRefreshRateHelper;
+import com.android.internal.util.expressiveos.DisplayRefreshRateHelper;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;

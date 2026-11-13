@@ -52,7 +52,7 @@ import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.preference.UtilsKt;
 import com.android.settingslib.search.SearchIndexable;
 
-import org.evolution.settings.preferences.SystemSettingSwitchPreference;
+import org.expressiveos.settings.preferences.SystemSettingSwitchPreference;
 
 import org.jetbrains.annotations.NotNull;
 

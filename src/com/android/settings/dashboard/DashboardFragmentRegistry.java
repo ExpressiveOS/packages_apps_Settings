@@ -58,7 +58,7 @@ import com.android.settings.supervision.SupervisionDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settingslib.drawer.CategoryKey;
 
-import org.evolution.settings.EvolutionSettings;
+import org.expressiveos.settings.ExpressiveStudioSettings;
 
 import java.util.Map;
 
@@ -83,8 +83,8 @@ public class DashboardFragmentRegistry {
         PARENT_TO_CATEGORY_KEY_MAP = new ArrayMap<>();
         PARENT_TO_CATEGORY_KEY_MAP.put(TopLevelSettings.class.getName(),
                 CategoryKey.CATEGORY_HOMEPAGE);
-        PARENT_TO_CATEGORY_KEY_MAP.put(EvolutionSettings.class.getName(),
-                CategoryKey.CATEGORY_EVOLVER);
+        PARENT_TO_CATEGORY_KEY_MAP.put(ExpressiveStudioSettings.class.getName(),
+                CategoryKey.CATEGORY_EXPRESSIVE_STUDIO);
         PARENT_TO_CATEGORY_KEY_MAP.put(NetworkDashboardFragment.class.getName(),
                 CategoryKey.CATEGORY_NETWORK);
         PARENT_TO_CATEGORY_KEY_MAP.put(ConnectedDeviceDashboardFragment.class.getName(),

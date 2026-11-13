@@ -42,7 +42,7 @@ import com.android.settings.R;
  * stops it on a still frame.
  *
  * All geometry is expressed in the 1080x240 viewport of
- * ic_evolution_logo_outline and scaled to fit the view (centerInside).
+ * ic_expressiveos_logo_outline and scaled to fit the view (centerInside).
  */
 public class GlowView extends View {
     private static final float VIEWPORT_W = 1080f;
@@ -159,7 +159,7 @@ public class GlowView extends View {
         // Light ink means a dark surface
         mOnDark = Color.luminance(ink) > 0.5f;
 
-        for (String data : ctx.getResources().getStringArray(R.array.evolution_logo_paths)) {
+        for (String data : ctx.getResources().getStringArray(R.array.expressiveos_logo_paths)) {
             mLogoUnits.addPath(PathParser.createPathFromPathData(data));
         }
 

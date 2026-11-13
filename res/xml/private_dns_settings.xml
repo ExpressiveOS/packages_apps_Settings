@@ -28,7 +28,7 @@
         android:positiveButtonText="@string/save"
         android:negativeButtonText="@android:string/cancel" />
 
-    <org.evolution.settings.preferences.SecureSettingSwitchPreference
+    <org.expressiveos.settings.preferences.SecureSettingSwitchPreference
         android:key="vpn_enforce_dns"
         android:title="@string/vpn_enforce_dns_title"
         android:order="20"

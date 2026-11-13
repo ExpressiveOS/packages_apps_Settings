@@ -12,7 +12,7 @@ import com.android.settings.R;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnResume;
 
-import org.evolution.settings.preferences.SystemSettingSeekBarPreference;
+import org.expressiveos.settings.preferences.SystemSettingSeekBarPreference;
 
 public class DozeBrightnessPreferenceController extends BasePreferenceController
         implements Preference.OnPreferenceChangeListener, LifecycleObserver, OnResume {

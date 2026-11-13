@@ -10,12 +10,12 @@ import android.widget.ImageView;
 
 import com.android.settings.R;
 
-public final class EvolutionLogoAnimator {
-    private EvolutionLogoAnimator() {}
+public final class ExpressiveLogoAnimator {
+    private ExpressiveLogoAnimator() {}
 
     public static void bind(View root) {
-        final GlowView  holo = root.findViewById(R.id.evolution_rgb_glow);
-        final ImageView logo = root.findViewById(R.id.evolution_logo_main);
+        final GlowView  holo = root.findViewById(R.id.expressiveos_rgb_glow);
+        final ImageView logo = root.findViewById(R.id.expressiveos_logo_main);
 
         if (holo == null) return;
 

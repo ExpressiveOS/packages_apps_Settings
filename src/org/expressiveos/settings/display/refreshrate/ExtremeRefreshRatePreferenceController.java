@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.display.refreshrate;
+package org.expressiveos.settings.display.refreshrate;
 
 import static android.provider.Settings.System.EXTREME_REFRESH_RATE;
 
@@ -17,7 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
 
-import org.evolution.display.RefreshRateManager;
+import org.expressiveos.display.RefreshRateManager;
 
 public class ExtremeRefreshRatePreferenceController extends TogglePreferenceController {
 

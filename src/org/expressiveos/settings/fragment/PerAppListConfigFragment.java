@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.fragment;
+package org.expressiveos.settings.fragment;
 
 import android.content.Context;
 
@@ -13,7 +13,7 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import java.util.List;
 
-import org.evolution.settings.widget.AppListPreference;
+import org.expressiveos.settings.widget.AppListPreference;
 
 public abstract class PerAppListConfigFragment extends BasePerAppConfigFragment {
 

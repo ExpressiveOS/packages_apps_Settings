@@ -28,7 +28,7 @@ public class DoubleTapScreenToSleepSettings extends DashboardFragment {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsProto.MetricsEvent.EVOLVER;
+        return MetricsProto.MetricsEvent.EXPRESSIVE_STUDIO;
     }
 
     @Override

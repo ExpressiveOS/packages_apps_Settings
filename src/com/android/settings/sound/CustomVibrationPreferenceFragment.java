@@ -34,7 +34,7 @@ public class CustomVibrationPreferenceFragment extends DashboardFragment {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.EVOLVER;
+        return MetricsEvent.EXPRESSIVE_STUDIO;
     }
 
     @Override

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.evolution.settings.widget;
+package org.expressiveos.settings.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
