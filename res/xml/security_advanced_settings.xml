@@ -38,6 +38,14 @@
         settings:keywords="@string/content_protection_preference_title"
         settings:controller="com.android.settings.security.ContentProtectionPreferenceController" />
 
+    <Preference
+        android:order="235"
+        android:key="app_lock_settings"
+        android:title="@string/app_lock_title"
+        android:summary="@string/app_lock_summary"
+        android:fragment="com.android.settings.security.AppLockSettingsFragment"
+        settings:controller="com.android.settings.security.AppLockPreferenceController" />
+
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="240"
         android:key="security_settings_device_admin_category">
@@ -121,6 +129,13 @@
         settings:keywords="@string/keywords_memtag"
         android:fragment="com.android.settings.security.MemtagPage"
         settings:controller="com.android.settings.security.MemtagPagePreferenceController" />
+
+    <org.expressiveos.settings.preferences.GlobalSettingSwitchPreference
+        android:order="96"
+        android:key="no_storage_restrict"
+        android:title="@string/no_storage_restrict_title"
+        android:summary="@string/no_storage_restrict_summary"
+        android:defaultValue="false"/>
 
     <!-- work profile security section -->
     <PreferenceCategory

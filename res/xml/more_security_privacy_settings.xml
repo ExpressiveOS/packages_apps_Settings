@@ -148,6 +148,14 @@
         settings:controller="com.android.settings.security.ContentProtectionPreferenceController" />
 
     <Preference
+        android:order="235"
+        android:key="app_lock_settings"
+        android:title="@string/app_lock_title"
+        android:summary="@string/app_lock_summary"
+        android:fragment="com.android.settings.security.AppLockSettingsFragment"
+        settings:controller="com.android.settings.security.AppLockPreferenceController" />
+
+    <Preference
         android:order="241"
         android:key="manage_device_admin"
         android:title="@string/manage_device_admin"
@@ -248,5 +256,13 @@
         <intent android:action="com.android.binarytransparency.LAUNCHER"
                 android:targetPackage="com.google.attestation.verifier" />
     </Preference>
+
+
+    <org.expressiveos.settings.preferences.GlobalSettingSwitchPreference
+        android:order="96"
+        android:key="no_storage_restrict"
+        android:title="@string/no_storage_restrict_title"
+        android:summary="@string/no_storage_restrict_summary"
+        android:defaultValue="false"/>
 
 </PreferenceScreen>
