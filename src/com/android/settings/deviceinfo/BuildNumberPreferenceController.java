@@ -51,6 +51,8 @@ import com.android.settingslib.utils.StringUtil;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
+import java.util.Random;
+
 public class BuildNumberPreferenceController extends BasePreferenceController implements
         LifecycleObserver, OnStart {
 
@@ -68,6 +70,36 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
     private boolean mDebuggingFeaturesDisallowedBySystem;
     private int mDevHitCountdown;
     private boolean mProcessingLastDevHit;
+
+    public final static java.lang.String[] insults = {
+            "ExpressiveOS > your personality",
+            "IT'S CLOBBERING TIME!",
+            "Acknowledge me",
+            "You flash ROMs more than you shower",
+            "Maybe clean your room first?",
+            "Nice ROM, still no friends",
+            "Your phone’s stable—you’re not",
+            "Dirty flash, dirty life",
+            "More updates, same boring you",
+            "8080",
+            "Hahaha, n00b!",
+            "What are you doing??",
+            "n00b alert!",
+            "What is this...? Amateur hour!?",
+            "This is not Windows",
+            "Please step away from the device!",
+            "error code: 1D10T",
+            "Go touch some grass",
+            "¯\\_(ツ)_/¯",
+            "Pro tip: Stop doing this",
+            "Perhaps this Android thing is not for you...",
+            "Don't you have anything better to do?",
+            "You're blooming... just BACKWARDS!",
+            "This won't make you look cooler to your friends",
+            "Go back to your stock ROM",
+            "FBI! OPEN UP!",
+            "Would you prefer iOS next time?",
+    };
 
     public BuildNumberPreferenceController(Context context, String key) {
         super(context, key);
@@ -183,7 +215,7 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
                 }
                 mDevHitToast = Toast.makeText(mContext,
                         StringUtil.getIcuPluralsString(mContext, mDevHitCountdown,
-                                R.string.show_dev_countdown),
+                                R.string.show_dev_countdown_cm),
                         Toast.LENGTH_SHORT);
                 mDevHitToast.show();
             }
@@ -198,7 +230,9 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
             if (mDevHitToast != null) {
                 mDevHitToast.cancel();
             }
-            mDevHitToast = Toast.makeText(mContext, R.string.show_dev_already,
+            Random randomInsult = new Random();
+            final int toasts = randomInsult.nextInt(insults.length);
+            mDevHitToast = Toast.makeText(mContext, insults[toasts],
                     Toast.LENGTH_LONG);
             mDevHitToast.show();
             mMetricsFeatureProvider.action(
@@ -258,7 +292,7 @@ public class BuildNumberPreferenceController extends BasePreferenceController im
         if (mDevHitToast != null) {
             mDevHitToast.cancel();
         }
-        mDevHitToast = Toast.makeText(mContext, R.string.show_dev_on,
+        mDevHitToast = Toast.makeText(mContext, R.string.show_dev_on_cm,
                 Toast.LENGTH_LONG);
         mDevHitToast.show();
 

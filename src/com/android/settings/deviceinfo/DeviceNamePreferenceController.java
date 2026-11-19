@@ -22,6 +22,7 @@ import android.net.wifi.SoftApConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.provider.Settings;
 import android.text.SpannedString;
 
@@ -33,6 +34,7 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.bluetooth.BluetoothLengthDeviceNameFilter;
 import com.android.settings.core.BasePreferenceController;
+import com.android.settings.deviceinfo.DeviceNameUtils;
 import com.android.settings.widget.ValidatedEditTextPreference;
 import com.android.settings.wifi.tether.WifiDeviceNameTextValidator;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
@@ -46,6 +48,8 @@ public class DeviceNamePreferenceController extends BasePreferenceController
         LifecycleObserver,
         OnSaveInstanceState,
         OnCreate {
+
+    private static final String KEY_MARKET_NAME_PROP = "ro.product.marketname";
     private static final String KEY_PENDING_DEVICE_NAME = "key_pending_device_name";
     @VisibleForTesting
     static final int RES_SHOW_DEVICE_NAME_BOOL = R.bool.config_show_device_name;
@@ -78,11 +82,25 @@ public class DeviceNamePreferenceController extends BasePreferenceController
     }
 
     private void initializeDeviceName() {
-        mDeviceName = Settings.Global.getString(mContext.getContentResolver(),
+        String deviceName = Settings.Global.getString(mContext.getContentResolver(),
                 Settings.Global.DEVICE_NAME);
-        if (mDeviceName == null) {
-            mDeviceName = Build.MODEL;
+
+        // Try using market name if there is not set device name
+        if (deviceName == null) {
+            String manufacturer = DeviceNameUtils.sanitize(
+                    SystemProperties.get("ro.product.manufacturer", Build.MANUFACTURER));
+            String marketName = DeviceNameUtils.sanitize(
+                    SystemProperties.get(KEY_MARKET_NAME_PROP, ""));
+
+            if (!marketName.isEmpty()) {
+                deviceName = DeviceNameUtils.prefixIfNeeded(manufacturer, marketName);
+            } else {
+                // If market name is not available, fallback to device model
+                String model = DeviceNameUtils.sanitize(Build.MODEL);
+                deviceName = DeviceNameUtils.prefixIfNeeded(manufacturer, model);
+            }
         }
+        mDeviceName = deviceName;
     }
 
     @Override
