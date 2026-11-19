@@ -157,6 +157,7 @@
     <item name="face_preview_translate_x" format="float" type="dimen">0</item>
     <item name="face_preview_scale" format="float" type="dimen">1.0</item>
     <dimen name="face_enroll_intro_illustration_margin_bottom">0dp</dimen>
+    <dimen name="face_enroll_posture_guidance_size">348dp</dimen>
 
     <!-- Keyboard -->
     <dimen name="keyboard_picker_margin_large">68dp</dimen>
@@ -602,4 +603,7 @@
     <dimen name="bluetooth_battery_indicator_battery_meter_height">16dp</dimen>
     <dimen name="bluetooth_battery_indicator_charging_icon_width">12dp</dimen>
     <dimen name="bluetooth_battery_indicator_charging_icon_height">16dp</dimen>
+
+    <dimen name="setup_compat_footer_button_radius">@dimen/sud_glif_expressive_footer_button_radius</dimen>
+    <dimen name="setup_design_items_group_corner_radius">20dp</dimen>
 </resources>

@@ -16,6 +16,13 @@
         android:name="com.android.settings.USE_BIOMETRIC_PROVIDER"
         android:protectionLevel="signature|privileged"/>
 
+    <permission
+        android:name="com.google.android.settings.biometrics.face.POSTURE_GUIDANCE"
+        android:protectionLevel="privileged|signature"/>
+
+    <uses-permission android:name="android.permission.LOCK_APPS" />
+    <uses-permission android:name="android.permission.TEST_LOCK_APPS" />
+
     <uses-permission android:name="android.permission.REQUEST_NETWORK_SCORES" />
     <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
@@ -156,7 +163,7 @@
     <application
             android:name=".SettingsApplication"
             android:label="@string/settings_label"
-            android:icon="@drawable/ic_launcher_settings"
+            android:icon="@mipmap/ic_launcher_settings"
             android:theme="@style/Theme.Settings"
             android:hardwareAccelerated="true"
             android:requiredForAllUsers="true"
@@ -3146,6 +3153,12 @@
             android:theme="@style/GlifV4Theme.DayNight"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".biometrics.face.FaceEnrollFoldPage"
+            android:exported="false"
+            android:theme="@style/GlifV4Theme.DayNight"
+            android:configChanges="density|keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:screenOrientation="nosensor"/>
+
         <activity android:name=".biometrics.BiometricHandoffActivity"
                   android:exported="false"/>
 
@@ -4081,7 +4094,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
-                android:value="com.android.settings.nfc.PaymentSettings" />
+                android:value="com.android.settings.connecteddevice.NfcAndPaymentFragment" />
             <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
                        android:value="@string/menu_key_connected_devices"/>
             <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
@@ -5304,7 +5317,8 @@
 
         <service
             android:name=".SettingsDumpService"
-            android:exported="true"
+            android:enabled="false"
+            android:exported="false"
             android:permission="android.permission.DUMP" />
 
         <!-- Quick Settings tiles for Developer Options -->
@@ -6277,6 +6291,146 @@
         </service>
 
         <!-- This is the longest AndroidManifest.xml ever. -->
+
+    
+        <!-- ExpressiveOS Private DNS -->
+        <activity
+            android:name="Settings$PrivateDnsSettingsActivity"
+            android:label="@string/select_private_dns_configuration_title"
+            android:exported="true"
+            android:icon="@drawable/ic_settings_private_dns">
+            <intent-filter>
+                <action android:name="com.android.settings.PRIVATE_DNS_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="4">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.network.PrivateDnsSettings" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                android:value="@string/menu_key_network"/>
+        </activity>
+
+        <!-- ExpressiveOS App Lock -->
+        <activity
+            android:name="Settings$AppLockSettingsActivity"
+            android:label="@string/app_lock_title"
+            android:exported="true">
+            <intent-filter android:priority="1">
+                <action android:name="com.android.settings.APP_LOCK_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.security.AppLockSettingsFragment" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                android:value="@string/menu_key_security"/>
+        </activity>
+
+        <!-- ExpressiveOS holiday themes -->
+        <receiver
+            android:name="org.expressiveos.settings.holiday.HolidayReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="org.expressiveos.settings.holiday.HolidayActionReceiver"
+            android:exported="false" />
+
+        <service
+            android:name="org.expressiveos.settings.utils.WallpaperSubjectExtractorService"
+            android:exported="false"
+            android:permission="android.permission.MANAGE_USERS" />
+
+        <!-- Expressive Studio -->
+        <activity android:name="Settings$ExpressiveStudioActivity"
+                  android:label="@string/studio_dashboard_title"
+                  android:exported="true">
+            <intent-filter android:priority="1">
+                <action android:name="org.expressiveos.settings.ExpressiveStudioSettings" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.order" android:value="-1"/>
+            <meta-data android:name="com.android.settings.summary"
+                       android:resource="@string/studio_dashboard_summary"/>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.expressiveos.settings.ExpressiveStudioSettings" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                       android:value="@string/menu_key_expressive_studio"/>
+            <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
+                       android:value="true" />
+        </activity>
+
+        <activity android:name="org.expressiveos.settings.fragments.about.ChangelogActivity"
+                android:label="@string/changelog_title"
+                android:theme="@style/Theme.SubSettingsBase"
+                android:enabled="true"
+                android:exported="true"
+                android:taskAffinity="com.android.settings"
+                android:parentActivityName="Settings">
+            <intent-filter android:priority="70">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Screen refresh rate -->
+        <activity android:name="Settings$ScreenRefreshRateActivity"
+            android:label="@string/screen_refresh_rate_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.expressiveos.settings.display.refreshrate.ScreenRefreshRateFragment"/>
+        </activity>
+
+        <!-- Smart Pixels -->
+        <activity android:name=".Settings$SmartPixelsActivity"
+            android:label="@string/smart_pixels_title"
+            android:taskAffinity="com.android.settings"
+            android:exported="true"
+            android:parentActivityName="Settings">
+            <intent-filter android:priority="1">
+                <action android:name="android.settings.SMART_PIXELS_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="org.expressiveos.settings.fragments.miscellaneous.SmartPixels" />
+        </activity>
+
+        <!-- Direct entry into Running Services -->
+        <activity android:name="Settings$DevRunningServicesActivity"
+                android:label="@string/runningservices_settings_title"
+                android:theme="@style/Theme.SubSettingsBase"
+                android:enabled="true"
+                android:exported="true"
+                android:excludeFromRecents="true"
+                android:taskAffinity="com.android.settings"
+                android:parentActivityName="Settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
+                <category android:name="android.intent.category.VOICE_LAUNCH" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.applications.RunningServices" />
+            <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
+                android:value="true" />
+        </activity>
 
     </application>
 </manifest>

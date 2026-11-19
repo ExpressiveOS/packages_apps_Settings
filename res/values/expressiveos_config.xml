@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: Evolution X
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Whether to show vendor security patch level -->
+    <bool name="config_show_vendor_patch_level" translatable="false">true</bool>
+
+    <!-- ComponentName to launch a vendor-specific enrollment activity if available -->
+<!-- Whether or not to use traffic light enroll -->
+    <bool name="config_face_enroll_use_traffic_light">false</bool>
+
+    <!-- Traffic light package to use -->
+    <string name="config_face_enroll_traffic_light_package"></string>
+
+    <!-- List of system apps that are allowed to configure per-app settings -->
+    <string-array name="config_perAppConfAllowedSystemApps" translatable="false">
+        <item>com.android.chrome</item>
+        <item>com.android.vending</item>
+        <item>com.oneplus.gallery</item>
+        <item>com.google.android.apps.docs</item>
+        <item>com.google.android.apps.nbu.files</item>
+        <item>com.google.android.apps.photos</item>
+        <item>com.google.android.apps.recorder</item>
+        <item>com.google.android.calculator</item>
+        <item>com.google.android.calendar</item>
+        <item>com.google.android.gm</item>
+    </string-array>
+
+    <!-- Whether to show double tap ambient settings -->
+    <bool name="config_supports_double_tap_ambient" translatable="false">true</bool>
+
+    <!-- Device image for HW info -->
+    <string name="config_deviceImageDrawable" translatable="false"></string>
+
+    <!-- Battery information -->
+    <bool name="config_show_battery_info" translatable="false">true</bool>
+    <bool name="config_show_battery_cycle_count" translatable="false">false</bool>
+    <bool name="config_show_battery_design_capacity">true</bool>
+    <bool name="config_show_battery_maximum_capacity">true</bool>
+
+    <!-- Display refresh rate switches -->
+    <bool name="config_show_peak_refresh_rate_switch">false</bool>
+    <bool name="config_show_min_refresh_rate_switch">false</bool>
+
+    <!-- HAL-owned face enrollment preview (Pixel 7+) -->
+    <bool name="config_face_enroll_hal_owns_camera">false</bool>
+    <integer name="face_preview_width">1080</integer>
+    <integer name="face_preview_height">1080</integer>
+    <bool name="config_face_attention_supported">true</bool>
+    <bool name="config_show_vendor_security_patch">true</bool>
+</resources>

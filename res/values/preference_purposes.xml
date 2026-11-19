@@ -206,6 +206,7 @@
     <string name="firmware_version_purpose" translatable="false">Provides information about the device Android version and other firmware components</string>
     <string name="kernel_version_purpose" translatable="false">The kernel version of the device</string>
     <string name="module_version_purpose" translatable="false">The date of the last system update</string>
+    <string name="expressiveos_logo_purpose" translatable="false">ExpressiveOS logo banner; opens the community Telegram group</string>
     <string name="os_build_number_purpose" translatable="false">The device build number</string>
     <string name="os_firmware_version_purpose" translatable="false">The Android version name or number</string>
     <string name="security_key_purpose" translatable="false">The date of the last Android security update</string>
@@ -806,4 +807,5 @@
     <string name="nfc_enabled_purpose" translatable="false">Whether NFC is enabled</string>
     <string name="mobile_network_data_roaming_enabled_purpose" translatable="false">Whether data roaming is enabled for the mobile network.</string>
     <string name="auto_select_network_purpose" translatable="false">Whether the device automatically selects the best available mobile network or requires the user to manually choose one.</string>
+    <string name="eos_black_theme_purpose" translatable="false">Switches dark theme to a pure black background</string>
 </resources>

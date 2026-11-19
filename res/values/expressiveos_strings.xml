@@ -4,14 +4,319 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Per-app data restrictions -->
+    <string name="advanced_vpn_preference_group_title">Built-in</string>
+    <string name="always_on_display_schedule_mixed_sunrise">Turns on from a time till sunrise</string>
+    <string name="always_on_display_schedule_mixed_sunset">Turns on from sunset till a time</string>
+    <string name="always_on_display_schedule_sunrise">Sunrise</string>
+    <string name="always_on_display_schedule_sunset">Sunset</string>
+    <string name="always_on_display_schedule_title">Always on display schedule</string>
+    <string name="ambient_doze_brightness_title">Always on display brightness</string>
+    <string name="ambient_pulse_brightness_title">Ambient display brightness</string>
+    <string name="app_lock_authentication_dialog_title">Unlock</string>
+    <string name="app_lock_biometrics_allowed_title">Enable biometrics for unlocking</string>
+    <string name="app_lock_biometrics_summary">Unlock locked apps using fingerprint or face unlock when custom lock is enabled</string>
+    <string name="app_lock_biometrics_title">Allow Biometrics</string>
+    <string name="app_lock_confirm_password_title">Confirm App Lock Password</string>
+    <string name="app_lock_confirm_pattern_title">Confirm App Lock Pattern</string>
+    <string name="app_lock_confirm_pin_title">Confirm App Lock PIN</string>
+    <string name="app_lock_credential_incorrect">Incorrect PIN, Password, or Pattern.</string>
+    <string name="app_lock_credential_mismatch">Credentials do not match. Try again.</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="app_lock_dashboard_card_summary_multiple"><ns0:g id="count" example="3">%d</ns0:g> apps protected</string>
+    <string name="app_lock_dashboard_card_summary_none">No apps protected</string>
+    <string name="app_lock_dashboard_card_title">App Lock</string>
+    <string name="app_lock_footer_text">Bubbles will be automatically dismissed after timeout</string>
+    <string name="app_lock_method_device_lock">Device Lock</string>
+    <string name="app_lock_method_device_lock_summary">Use system screen lock PIN/Pattern/Password &amp; Biometrics</string>
+    <string name="app_lock_method_password">Password</string>
+    <string name="app_lock_method_password_summary">Alphanumeric password</string>
+    <string name="app_lock_method_pattern">Pattern</string>
+    <string name="app_lock_method_pattern_summary">Draw pattern to unlock</string>
+    <string name="app_lock_method_pin">PIN</string>
+    <string name="app_lock_method_pin_summary">4-digit code</string>
+    <string name="app_lock_method_title">App lock method</string>
+    <string name="app_lock_not_secure_button">Set screen lock</string>
+    <string name="app_lock_not_secure_summary">To use App Lock, you need to first set a secure screen lock (PIN, pattern, or password) in Settings.</string>
+    <string name="app_lock_not_secure_title">Set a screen lock</string>
+    <string name="app_lock_notifications_disabled_summary">Protect an application first</string>
+    <string name="app_lock_notifications_summary">Notification content will be hidden and collapsed for selected apps when they are locked. Heads up notifications will be automatically disabled.</string>
+    <string name="app_lock_notifications_title">Redact notifications</string>
+    <string name="app_lock_packages_summary">Select the apps to protect with biometrics or device credentials</string>
+    <string name="app_lock_packages_title">Protected apps</string>
+    <string name="app_lock_search_placeholder">Search apps…</string>
+    <string name="app_lock_settings_summary">Configure lock timeout and credential authentication method</string>
+    <string name="app_lock_settings_title">App lock settings</string>
+    <string name="app_lock_setup_password_title">Set App Lock Password</string>
+    <string name="app_lock_setup_pattern_title">Draw App Lock Pattern</string>
+    <string name="app_lock_setup_pin_title">Set App Lock PIN</string>
+    <string name="app_lock_show_system">Show system apps</string>
+    <string name="app_lock_summary">Protect apps using your device credential</string>
+    <string name="app_lock_timeout_1m">1 minute</string>
+    <string name="app_lock_timeout_30s">30 seconds</string>
+    <string name="app_lock_timeout_5m">5 minutes</string>
+    <string name="app_lock_timeout_5s">5 seconds (Default)</string>
+    <string name="app_lock_timeout_immediately">Immediately</string>
+    <string name="app_lock_timeout_screen_lock">Only when screen locks</string>
+    <string name="app_lock_timeout_summary">Duration of time after which an unlocked app in background should be locked</string>
+    <string name="app_lock_timeout_title">Auto lock timeout</string>
+    <string name="app_lock_title">App lock</string>
+    <string name="app_volume">App volume</string>
+    <string name="app_volume_summary">Show per-app volume button into volume dialog</string>
+    <string name="app_volume_title">Per-app volume control</string>
+    <string name="auto_brightness_one_shot_summary">Brightness adjustment will only occur at the moment the screen is turned on</string>
+    <string name="auto_brightness_one_shot_title">One shot auto-brightness</string>
+    <string name="back_gesture_arrow_summary">Show an animated arrow for back gesture</string>
+    <string name="back_gesture_arrow_title">Back gesture animation</string>
+    <string name="back_gesture_haptic_summary">Vibrate when performing a back gesture</string>
+    <string name="back_gesture_haptic_title">Back gesture haptic</string>
+    <string name="back_height_high_label">Bottom</string>
+    <string name="back_height_low_label">Full</string>
+    <string name="back_height_summary">Screen height valid for back gesture</string>
+    <string name="back_height_title">Back gesture height</string>
+    <string name="background_processes_settings_title">Background processes</string>
+    <string name="battery_design_capacity">Design capacity</string>
+    <string name="battery_design_capacity_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
+    <string name="battery_design_capacity_summary">%1$d mAh</string>
+    <string name="battery_health">Health</string>
+    <string name="battery_health_cold">Cold</string>
+    <string name="battery_health_dead">Dead</string>
+    <string name="battery_health_good">Good</string>
+    <string name="battery_health_over_voltage">Over voltage</string>
+    <string name="battery_health_overheat">Overheat</string>
+    <string name="battery_health_unknown">Unknown</string>
+    <string name="battery_health_unspecified_failure">Unspecified failure</string>
+    <string name="battery_maximum_capacity">Maximum capacity</string>
+    <string name="battery_maximum_capacity_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
+    <string name="battery_maximum_capacity_summary">%1$d mAh (%2$d%%)</string>
+    <string name="battery_saver_refresh_rate_disabled_summary">Extreme refresh rate is on</string>
+    <string name="battery_saver_refresh_rate_summary">Use 60 Hz screen refresh rate to save power when Battery Saver is on</string>
+    <string name="battery_saver_refresh_rate_title">Reduce refresh rate</string>
+    <string name="battery_technology">Technology</string>
+    <string name="battery_technology_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
+    <string name="battery_temperature">Temperature</string>
+    <string name="battery_temperature_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
+    <string name="battery_voltage">Voltage</string>
+    <string name="battery_voltage_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
+    <string name="bluetooth_details_audio_codec_title">Audio codec</string>
+    <string name="bluetooth_details_audio_codec_unavailable">Not available</string>
+    <string name="bluetooth_timeout">Bluetooth timeout</string>
+    <string name="bluetooth_timeout_summary">Do not automatically turn off Bluetooth</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="bluetooth_timeout_summary_auto">Bluetooth will turn off after <ns0:g id="timeout_description">%1$s</ns0:g> if no devices connected</string>
+    <string name="build_maintainer">Build maintainer</string>
+    <string name="build_maintainer_donate_url" translatable="false">""</string>
+    <string name="build_maintainer_label">Maintained by</string>
+    <string name="build_maintainer_summary" translatable="false">Unknown</string>
+    <string name="build_type_official">Official build</string>
+    <string name="build_type_unofficial">Unofficial build</string>
+    <string name="cinema_engine_mode_title">Cinema display</string>
+    <string name="clipboard_auto_clear_enabled_title">Use clipboard auto clear</string>
+    <string name="clipboard_auto_clear_summary">Automatically clear clipboard at the scheduled time</string>
+    <string name="clipboard_auto_clear_timeout_disable_clipboard">Disable clipboard</string>
+    <string name="clipboard_auto_clear_timeout_title">Clipboard auto clear timeout</string>
+    <string name="clipboard_auto_clear_title">Clipboard auto clear</string>
+    <string name="confirm_before_enable_title">Continue to enable?</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="custom_timeout_summary_10mins">10 minutes</string>
+    <string name="custom_timeout_summary_10secs">10 seconds</string>
+    <string name="custom_timeout_summary_12hours">12 hours</string>
+    <string name="custom_timeout_summary_15secs">15 seconds</string>
+    <string name="custom_timeout_summary_1hour">1 hour</string>
+    <string name="custom_timeout_summary_1hour_def">1 hour (Default)</string>
+    <string name="custom_timeout_summary_1min">1 minute</string>
+    <string name="custom_timeout_summary_20mins">20 minutes</string>
+    <string name="custom_timeout_summary_24hours">24 hours</string>
+    <string name="custom_timeout_summary_2hours">2 hours</string>
+    <string name="custom_timeout_summary_2mins">2 minutes</string>
+    <string name="custom_timeout_summary_30mins">30 minutes</string>
+    <string name="custom_timeout_summary_30secs">30 seconds</string>
+    <string name="custom_timeout_summary_36hours">36 hours</string>
+    <string name="custom_timeout_summary_48hours">48 hours</string>
+    <string name="custom_timeout_summary_4hours">4 hours</string>
+    <string name="custom_timeout_summary_5mins">5 minutes</string>
+    <string name="custom_timeout_summary_5secs">5 seconds</string>
+    <string name="custom_timeout_summary_72hours">72 hours</string>
+    <string name="custom_timeout_summary_8hours">8 hours</string>
+    <string name="custom_timeout_summary_never">Never</string>
+    <string name="custom_vibration_pattern_summary">Set a custom vibration pattern</string>
+    <string name="custom_vibration_pattern_title">Custom pattern</string>
     <string name="data_usage_app_restrict_all">Allow network access</string>
     <string name="data_usage_app_restrict_all_summary">Enable network usage</string>
-
     <string name="data_usage_app_restrict_mobile">Mobile data</string>
     <string name="data_usage_app_restrict_mobile_summary">Enable usage of mobile data</string>
     <string name="data_usage_app_restrict_vpn">VPN data</string>
     <string name="data_usage_app_restrict_vpn_summary">Enable usage of VPN data</string>
     <string name="data_usage_app_restrict_wifi">Wi\u2011Fi data</string>
     <string name="data_usage_app_restrict_wifi_summary">Enable usage of Wi\u2011Fi data</string>
+    <string name="device_market_name">Market Name</string>
+    <string name="device_name">Device</string>
+    <string name="disable_debugging">Disable debugging</string>
+    <string name="display_engine_category">Display engine</string>
+    <string name="display_engine_default">Default</string>
+    <string name="display_engine_mode_footer_text">Inspired by Sony\'s Bravia/X-Reality engine, the Display Engine features Vivid mode for enhanced brightness and color saturation, X-Reality mode for improved detail and color accuracy, and Triluminous mode for a wider color range.</string>
+    <string name="display_engine_mode_title">Reality display engine</string>
+    <string name="double_tap_screen_to_sleep_summary">Double tap an empty space on the lock screen to turn off the screen.</string>
+    <string name="double_tap_screen_to_sleep_title">Double tap to turn off screen</string>
+    <string name="double_tap_title">Double tap</string>
+    <string name="doze_brightness_force_summary">Use custom brightness values instead of screen brightness</string>
+    <string name="doze_brightness_force_title">Force brightness values</string>
+    <string name="doze_double_tap_summary">Pulse notifications by a double tap</string>
+    <string name="doze_double_tap_title">Double tap to check phone</string>
+    <string name="doze_gesture_ambient_summary">Show Ambient Display instead of fully waking the screen up</string>
+    <string name="doze_gesture_ambient_title">Show Ambient</string>
+    <string name="doze_gesture_vibrate_summary">Vibrate when this gesture is invoked</string>
+    <string name="doze_gesture_vibrate_title">Haptic feedback</string>
+    <string name="doze_on_charge_summary">Display info when device is charging</string>
+    <string name="doze_on_charge_title">Always show when charging</string>
+    <string name="enable_debugging">Enable debugging</string>
+    <string name="enable_protection">Enable protection</string>
+    <string name="eos_black_theme_summary">Use pure black background for dark theme</string>
+    <string name="eos_black_theme_title">Pure black</string>
+    <string name="eos_version_title">ExpressiveOS version</string>
+    <string name="extreme_refresh_rate_summary">Force highest refresh rate for all apps</string>
+    <string name="extreme_refresh_rate_title">Extreme refresh rate</string>
+    <string name="extreme_refresh_rate_warning">This will ensure system select highest refresh rate, ignoring user selected and app preferred options. Apps that require specific refresh rate may run abnormally.</string>
+    <string name="face_down_sleep_summary">Turn off screen after a short period when device is flipped over</string>
+    <string name="face_down_sleep_title">Face down detection</string>
+    <string name="face_enrolling_close_to_continue">Fold phone during setup</string>
+    <string name="face_enrolling_close_to_continue_description">The phone must be folded to set up or use Face Unlock</string>
+    <string name="face_enrolling_do_it_later">Do it later</string>
+    <string name="fingerprint_lockout_summary">Deactivates 30 second timeout as well as permanent lockout after multiple failed fingerprint unlock attempts</string>
+    <string name="fingerprint_lockout_title">Disable fingerprint lockout</string>
+    <string name="force_lte_ca_summary">Enhances LTE bandwidth by aggregating supported bands</string>
+    <string name="force_lte_ca_title">Carrier aggregation</string>
+    <string name="game_space_summary">Enhance your gaming experience</string>
+    <string name="game_space_title">Game space</string>
+    <string name="gesture_wake">Fully wake</string>
+    <string name="gesture_wake_ambient">Show Ambient</string>
+    <string name="hardware_codename">Codename</string>
+    <string name="hardware_platform_label">Platform</string>
+    <string name="hardware_sku">Hardware SKU</string>
+    <string name="heads_up_notifications_enabled_summary">Display priority notifications in a small floating window</string>
+    <string name="heads_up_notifications_enabled_title">Heads-up</string>
+    <string name="hide_from_launcher_summary">Prevent this application from showing up in any launcher. Requires a launcher restart for changes to take effect.</string>
+    <string name="hide_from_launcher_title">Hide from launcher</string>
+    <string name="high_touch_sensitivity_summary">Increase touchscreen sensitivity so it can be used while wearing gloves</string>
+    <string name="high_touch_sensitivity_title">High touch sensitivity</string>
+    <string name="incall_vibrate_call_wait_title">Vibrate on call waiting</string>
+    <string name="incall_vibrate_connect_title">Vibrate on connect</string>
+    <string name="incall_vibrate_disconnect_title">Vibrate on disconnect</string>
+    <string name="incall_vibration_category">In-call vibration options</string>
+    <string name="keywords_double_tap_screen_to_sleep">double tap to sleep, lock screen</string>
+    <string name="local_app_backup_restore_summary">Save APKs and app data as normal tar archives in internal storage</string>
+    <string name="local_app_backup_restore_title">Local app backup and restore</string>
+    <string name="lock_screen_auto_pin_confirm_summary_custom">Unlock automatically if you input a correct PIN. This is slightly less secure than tapping Enter to confirm.</string>
+    <string name="longpress_to_clipboard">Long-press to copy</string>
+    <string name="maintainer_link_donate">Donate</string>
+    <string name="maintainer_link_github">GitHub profile</string>
+    <string name="maintainer_support">Support</string>
+    <string name="max_refresh_rate_title">Maximum refresh rate</string>
+    <string name="min_refresh_rate_adaptive">Adaptive</string>
+    <string name="min_refresh_rate_title">Minimum refresh rate</string>
+    <string name="model_serial_hidden">Hidden</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="model_serial_hidden_ends_in">Hidden, ends in <ns0:g id="last_four" example="1A2B">%1$s</ns0:g></string>
+    <string name="multi_audio_focus_summary">Allow multiple apps to play audio simultaneously</string>
+    <string name="multi_audio_focus_title">Multi audio focus</string>
+    <string name="natural_engine_mode_title">Natural display</string>
+    <string name="no_storage_restrict_summary">Remove the restriction when selecting folders through Storage Access Framework. Can be convenient in some cases but may lead to privacy leaks.</string>
+    <string name="no_storage_restrict_title">No storage restrict</string>
+    <string name="override_mock_location_summary">When enabled, apps cannot detect mock locations</string>
+    <string name="override_mock_location_title">Override mock location restriction</string>
+    <string name="pattern_custom">Custom</string>
+    <string name="pattern_da_da_dzzz">da-da-dzzz</string>
+    <string name="pattern_da_dzzz_da">da-dzzz-da</string>
+    <string name="pattern_dzzz_da">dzzz-da</string>
+    <string name="pattern_dzzz_dzzz">dzzz-dzzz</string>
+    <string name="pattern_mm_mm_mm">mm-mm-mm</string>
+    <string name="per_app_config_empty_text">No installed apps support current settings</string>
+    <string name="per_app_refresh_rate_default">Follow system</string>
+    <string name="per_app_refresh_rate_summary">Configure refresh rate individually for each apps</string>
+    <string name="per_app_refresh_rate_title">Per-app refresh rate config</string>
+    <string name="prevent_ringing_option_cycle">Cycle through modes</string>
+    <string name="prevent_ringing_option_cycle_summary">On (cycle through modes)</string>
+    <string name="private_dns_hostname_adguard" translatable="false">dns.adguard.com</string>
+    <string name="private_dns_hostname_cleanbrowsing" translatable="false">security-filter-dns.cleanbrowsing.org</string>
+    <string name="private_dns_hostname_cloudflare" translatable="false">one.one.one.one</string>
+    <string name="private_dns_hostname_cloudflare_block_malware" translatable="false">security.cloudflare-dns.com</string>
+    <string name="private_dns_hostname_cloudflare_block_malware_and_adult_content" translatable="false">family.cloudflare-dns.com</string>
+    <string name="private_dns_hostname_open_dns" translatable="false">dns.opendns.com</string>
+    <string name="private_dns_hostname_quad9" translatable="false">dns.quad9.net</string>
+    <string name="private_dns_hostname_quad9_ecs" translatable="false">dns11.quad9.net</string>
+    <string name="private_dns_hostname_quad9_unsecured" translatable="false">dns10.quad9.net</string>
+    <string name="private_dns_hostname_quad9_unsecured_ecs" translatable="false">dns12.quad9.net</string>
+    <string name="private_dns_mode_adguard" translatable="false">AdGuard DNS</string>
+    <string name="private_dns_mode_cleanbrowsing" translatable="false">Cleanbrowsing DNS</string>
+    <string name="private_dns_mode_cloudflare" translatable="false">Cloudflare DNS</string>
+    <string name="private_dns_mode_cloudflare_block_malware" translatable="false">Cloudflare Block Malware DNS</string>
+    <string name="private_dns_mode_cloudflare_block_malware_and_adult_content" translatable="false">Cloudflare Block Malware and Adult Content DNS</string>
+    <string name="private_dns_mode_open_dns" translatable="false">Open DNS</string>
+    <string name="private_dns_mode_quad9" translatable="false">Quad9 DNS</string>
+    <string name="private_dns_mode_quad9_ecs" translatable="false">Quad9 with ECS DNS</string>
+    <string name="private_dns_mode_quad9_unsecured" translatable="false">Quad9 Unsecured DNS</string>
+    <string name="private_dns_mode_quad9_unsecured_ecs" translatable="false">Quad9 Unsecured with ECS DNS</string>
+    <string name="proximity_wake_summary">Check the proximity sensor prior to waking up screen</string>
+    <string name="proximity_wake_title">Prevent accidental wake-up</string>
+    <string name="pulse_on_new_tracks_summary">Show Ambient Display when a new music track is played</string>
+    <string name="pulse_on_new_tracks_title">Music ticker</string>
+    <string name="radio_info_title">Radio info</string>
+    <string name="reading_engine_mode_title">Comfort display (Reading mode)</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="screen_refresh_rate_adaptive_summary">Adaptive, up to <ns0:g id="max_refresh_rate">%1$d</ns0:g> Hz</string>
+    <string name="screen_refresh_rate_title">Screen refresh rate</string>
+    <string name="screenshot_shutter_sound_title">Screenshot sound</string>
+    <string name="security_settings_face_enroll_finish_description_with_bp">Now you can use your face to unlock your phone or verify it’s you, like when you sign in to apps or approve a purchase</string>
+    <string name="show_clipboard_overlay_summary">Show an overlay in the left bottom corner of the screen when something is copied to the clipboard</string>
+    <string name="show_clipboard_overlay_title">Show clipboard overlay</string>
+    <string name="show_dev_countdown_cm">{count, plural,
+      =1      {You are now # step away from enabling development settings.}
+      other   {You are now # steps away from enabling development settings.}
+    }</string>
+    <string name="show_dev_on_cm">You have enabled development settings!</string>
+    <string name="show_ime_space_summary">Enable the input method quick switch feature to switch input methods or hide the on-screen keyboard from the feature bar at the bottom of the screen when typing</string>
+    <string name="show_ime_space_title">Show IME button space</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="sim_card_number_title" translatable="false">SIM <ns0:g id="card_number">%1$d</ns0:g></string>
+    <string name="smart_5g_summary">Automatically switch between 5G and 4G to reduce battery consumption</string>
+    <string name="smart_5g_title">Smart 5G</string>
+    <string name="status_bar_double_tap_to_sleep_summary">Double-tap on the status bar or lockscreen to turn off the display</string>
+    <string name="status_bar_double_tap_to_sleep_title">Tap to sleep</string>
+    <string name="status_sleep_time">Deep sleep</string>
+    <string name="string_disabled">Disabled</string>
+    <string name="total_ram">Total RAM</string>
+    <string name="triluminous_engine_mode_title">Triluminous display</string>
+    <string name="unlock_scramble_pin_layout_summary">Scramble PIN layout when unlocking device</string>
+    <string name="unlock_scramble_pin_layout_title">Scramble layout</string>
+    <string name="usb_default_config_summary">Choose the default behavior when connected to a device via USB</string>
+    <string name="usb_default_config_title">USB configuration</string>
+    <string name="vehicle_motion_cues_dot_count_summary">Number of animated motion cue dots shown along the screen margins</string>
+    <string name="vehicle_motion_cues_dot_count_title">Dot Count</string>
+    <string name="vehicle_motion_cues_dot_size_summary">Size of the animated motion cue dots</string>
+    <string name="vehicle_motion_cues_dot_size_title">Dot Size</string>
+    <string name="vehicle_motion_cues_sensitivity_summary">Strength of the dot translations relative to vehicle forces</string>
+    <string name="vehicle_motion_cues_sensitivity_title">Motion Sensitivity</string>
+    <string name="vehicle_motion_cues_summary">Show animated dots on screen edges that move with vehicle motion to help prevent motion sickness</string>
+    <string name="vehicle_motion_cues_title">Vehicle Motion Cues</string>
+    <string name="vendor_security_patch">Vendor security patch level</string>
+    <string name="vibration_pattern_title">Ringtone vibration pattern</string>
+    <string name="vivid_engine_mode_title">Vivid display</string>
+    <string name="vpn_enforce_dns_summary">Disable the private DNS when connected to a VPN\nWill restore upon disconnecting</string>
+    <string name="vpn_enforce_dns_title">Disable for VPN</string>
+    <string name="vpn_preference_group_title">Others</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when connecting or disconnecting a power source</string>
+    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
+    <string name="wifi_do_not_validate_eap_server">Do not validate</string>
+    <string name="wifi_do_not_validate_eap_server_warning">No certificate specified. Your connection will not be private.</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="wifi_hotspot_block_client_dialog_text">This action will disconnect \"<ns0:g id="device_name">%1$s</ns0:g>\" from this device and add it to blocklist</string>
+    <string name="wifi_hotspot_block_client_dialog_title">Block device</string>
+    <string name="wifi_hotspot_blocked_clients_list_title">Blocked Devices</string>
+    <string name="wifi_hotspot_client_limit_title">Limit of connected devices</string>
+    <string name="wifi_hotspot_client_manager_footer_text">No clients are currently available. Connected and blocked devices will be listed here when available.</string>
+    <string name="wifi_hotspot_client_manager_list_only_summary">List devices connected to the hotspot</string>
+    <string name="wifi_hotspot_client_manager_summary">List and manage devices connected to the hotspot</string>
+    <string name="wifi_hotspot_client_manager_title">Connected devices</string>
+    <string name="wifi_hotspot_connected_clients_list_title">Connected Devices</string>
+    <string name="wifi_hotspot_hidden_ssid_summary">Your mobile hotspot\'s name won\'t appear in the list of available WLAN networks.</string>
+    <string name="wifi_hotspot_hidden_ssid_title">Hidden network</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="wifi_hotspot_unblock_client_dialog_text">The device \"<ns0:g id="device_name">%1$s</ns0:g>\" will be able to connect to this hotspot</string>
+    <string name="wifi_hotspot_unblock_client_dialog_title">Unblock device</string>
+    <string name="wifi_timeout">WiFi timeout</string>
+    <string name="wifi_timeout_summary">Do not automatically turn off WiFi</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="wifi_timeout_summary_auto">WiFi will turn off after <ns0:g id="timeout_description">%1$s</ns0:g> if no network connected</string>
+    <string name="x_reality_engine_mode_title">X-Reality engine</string>
 </resources>
