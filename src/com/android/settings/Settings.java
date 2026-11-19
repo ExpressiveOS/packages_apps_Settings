@@ -295,6 +295,7 @@ public class Settings extends SettingsActivity {
     }
     /** Activity for the More settings page. */
     public static class MoreSecurityPrivacySettingsActivity extends SettingsActivity { /* empty */ }
+    public static class AppLockSettingsActivity extends SettingsActivity { /* empty */ }
     public static class UsageAccessSettingsActivity extends SettingsActivity { /* empty */ }
     public static class AppUsageAccessSettingsActivity extends SettingsActivity { /* empty */ }
     public static class LocationSettingsActivity extends SettingsActivity { /* empty */ }
@@ -600,6 +601,7 @@ public class Settings extends SettingsActivity {
     public static class BugReportHandlerPickerActivity extends SettingsActivity { /* empty */ }
 
     // Top level categories for new IA
+    public static class ExpressiveStudioActivity extends SettingsActivity {}
     public static class NetworkDashboardActivity extends SettingsActivity {
         private static final String TAG = "NetworkDashboardActivity";
         @Override
@@ -818,4 +820,13 @@ public class Settings extends SettingsActivity {
             }
         }
     }
+
+    /** ExpressiveOS additions */
+    public static class PrivateDnsSettingsActivity extends SettingsActivity { /* empty */ }
+
+    public static class SmartPixelsActivity extends SettingsActivity {}
+
+    public static class DevRunningServicesActivity extends SettingsActivity { /* empty */ }
+
+    public static class ScreenRefreshRateActivity extends SettingsActivity {}
 }

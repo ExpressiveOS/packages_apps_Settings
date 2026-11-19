@@ -22,6 +22,7 @@ import com.android.settings.MainClear;
 import com.android.settings.MainClearConfirm;
 import com.android.settings.ResetNetwork;
 import com.android.settings.Settings;
+import com.android.settings.Settings.ScreenRefreshRateActivity;
 import com.android.settings.TestingSettings;
 import com.android.settings.TrustedCredentialsSettings;
 import com.android.settings.accessibility.AccessibilityDetailsSettingsFragment;
@@ -48,6 +49,7 @@ import com.android.settings.applications.AppDashboardFragment;
 import com.android.settings.applications.AppStorageSettings;
 import com.android.settings.applications.ProcessStatsSummary;
 import com.android.settings.applications.ProcessStatsUi;
+import com.android.settings.applications.RunningServices;
 import com.android.settings.applications.UsageAccessDetails;
 import com.android.settings.applications.appcompat.UserAspectRatioDetails;
 import com.android.settings.applications.appinfo.AlarmsAndRemindersDetails;
@@ -150,6 +152,7 @@ import com.android.settings.location.WifiScanningFragment;
 import com.android.settings.network.MobileNetworkListFragment;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.network.NetworkProviderSettings;
+import com.android.settings.network.PrivateDnsSettings;
 import com.android.settings.network.apn.ApnEditor;
 import com.android.settings.network.apn.ApnSettings;
 import com.android.settings.network.telephony.CellularSecuritySettingsFragment;
@@ -194,6 +197,8 @@ import com.android.settings.regionalpreferences.TemperatureUnitFragment;
 import com.android.settings.safetycenter.MoreSecurityPrivacyFragment;
 import com.android.settings.safetycenter.ui.SafetyCenterFragment;
 import com.android.settings.safetycenter.ui.SafetyCenterQsFragment;
+import com.android.settings.security.AppLockSettingsFragment;
+import com.android.settings.security.AppLockSubSettingsFragment;
 import com.android.settings.security.ContentProtectionPreferenceFragment;
 import com.android.settings.security.LockscreenDashboardFragment;
 import com.android.settings.security.MemtagPage;
@@ -221,6 +226,10 @@ import com.android.settings.wifi.details.WifiNetworkDetailsFragment;
 import com.android.settings.wifi.p2p.WifiP2pSettings;
 import com.android.settings.wifi.savedaccesspoints2.SavedAccessPointsWifiSettings2;
 import com.android.settings.wifi.tether.WifiTetherSettings;
+
+import org.expressiveos.settings.ExpressiveStudioSettings;
+import org.expressiveos.settings.display.refreshrate.ScreenRefreshRateFragment;
+import org.expressiveos.settings.fragments.miscellaneous.SmartPixels;
 
 public class SettingsGateway {
 
@@ -364,6 +373,7 @@ public class SettingsGateway {
             AutomaticStorageManagerSettings.class.getName(),
             StorageDashboardFragment.class.getName(),
             SystemDashboardFragment.class.getName(),
+            ExpressiveStudioSettings.class.getName(),
             NetworkDashboardFragment.class.getName(),
             ConnectedDeviceDashboardFragment.class.getName(),
             UsbDetailsFragment.class.getName(),
@@ -423,6 +433,8 @@ public class SettingsGateway {
             ZenModeCallsFragment.class.getName(),
             ContactsStorageSettings.class.getName(),
             ContentProtectionPreferenceFragment.class.getName(),
+            AppLockSettingsFragment.class.getName(),
+            AppLockSubSettingsFragment.class.getName(),
             MagnificationPreferenceFragment.class.getName(),
             FlashNotificationsPreferenceFragment.class.getName(),
             BundlePreferenceFragment.class.getName(),
@@ -432,10 +444,15 @@ public class SettingsGateway {
             SummarizationPreferenceFragment.class.getName(),
             SafetyCenterFragment.class.getName(),
             SafetyCenterQsFragment.class.getName(),
+            PrivateDnsSettings.class.getName(),
+            SmartPixels.class.getName(),
+            RunningServices.class.getName(),
+            ScreenRefreshRateFragment.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
             // Home page
+            Settings.ExpressiveStudioActivity.class.getName(),
             Settings.NetworkDashboardActivity.class.getName(),
             Settings.ConnectedDeviceDashboardActivity.class.getName(),
             Settings.AppDashboardActivity.class.getName(),
@@ -479,5 +496,10 @@ public class SettingsGateway {
             Settings.MemtagPageActivity.class.getName(),
             Settings.NavigationModeSettingsActivity.class.getName(),
             Settings.ShadeSettingsActivity.class.getName(),
+            // ExpressiveOS additions
+            Settings.PrivateDnsSettingsActivity.class.getName(),
+            Settings.SmartPixelsActivity.class.getName(),
+            Settings.DevRunningServicesActivity.class.getName(),
+            Settings.ScreenRefreshRateActivity.class.getName(),
     };
 }
