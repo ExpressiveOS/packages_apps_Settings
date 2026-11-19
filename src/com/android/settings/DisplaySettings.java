@@ -26,6 +26,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.display.BrightnessLevelPreferenceController;
+import com.android.settings.display.BlurSettingsPreferenceController;
 import com.android.settings.display.CameraGesturePreferenceController;
 import com.android.settings.display.DisplayScreen;
 import com.android.settings.display.ExternalDisplayPreferenceController;
@@ -89,6 +90,7 @@ public class DisplaySettings extends DashboardFragment {
     private static List<AbstractPreferenceController> buildPreferenceControllers(
             Context context, Lifecycle lifecycle) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
+        controllers.add(new BlurSettingsPreferenceController(context));
         controllers.add(new CameraGesturePreferenceController(context));
         controllers.add(new LiftToWakePreferenceController(context));
         controllers.add(new TapToWakePreferenceController(context));

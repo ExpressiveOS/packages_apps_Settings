@@ -18,6 +18,7 @@ package com.android.settings.biometrics.face;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -34,9 +35,10 @@ import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.android.settings.R;
 import com.android.settings.biometrics.BiometricEnrollSidecar;
@@ -53,6 +55,8 @@ public class FaceEnrollPreviewFragment extends InstrumentedPreferenceFragment
 
     private static final String TAG = "FaceEnrollPreviewFragment";
 
+    private static final long PREVIEW_REVEAL_FALLBACK_MS = 600;
+
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
 
@@ -65,12 +69,14 @@ public class FaceEnrollPreviewFragment extends InstrumentedPreferenceFragment
     private CaptureRequest mPreviewRequest;
     private Size mPreviewSize;
     private ParticleCollection.Listener mListener;
+    private boolean mHalOwnsCamera;
+    private Surface mPreviewSurface;
+    private SurfaceView mSurfaceView;
+    private Runnable mSurfaceReadyListener;
+    private boolean mPreviewRevealed;
 
     // View used to contain the circular cutout and enrollment animation drawable
-    private ImageView mCircleView;
-
-    // Drawable containing the circular cutout and enrollment animations
-    private FaceEnrollAnimationDrawable mAnimationDrawable;
+    private FaceEnrollProgressView mProgressView;
 
     // Texture used for showing the camera preview
     private FaceSquareTextureView mTextureView;
@@ -81,6 +87,23 @@ public class FaceEnrollPreviewFragment extends InstrumentedPreferenceFragment
         @Override
         public void onEnrolled() {
             mListener.onEnrolled();
+        }
+    };
+
+    private final SurfaceHolder.Callback mSurfaceHolderCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            mPreviewSurface = holder.getSurface();
+            notifySurfaceReady();
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            mPreviewSurface = null;
         }
     };
 
@@ -187,21 +210,57 @@ public class FaceEnrollPreviewFragment extends InstrumentedPreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHalOwnsCamera = getResources().getBoolean(R.bool.config_face_enroll_hal_owns_camera);
         mTextureView = getActivity().findViewById(R.id.texture_view);
-        mCircleView = getActivity().findViewById(R.id.circle_view);
+        mSurfaceView = getActivity().findViewById(R.id.surface_view);
+        mProgressView = getActivity().findViewById(R.id.progress_view);
 
-        // Must disable hardware acceleration for this view, otherwise transparency breaks
-        mCircleView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        if (mHalOwnsCamera) {
+            // The face HAL keeps rendering into the initial preview surface, which is gone once
+            // the activity is recreated. Unlike portrait, locked is respected on large screens.
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
-        mAnimationDrawable = new FaceEnrollAnimationDrawable(getContext(), mAnimationListener);
-        mCircleView.setImageDrawable(mAnimationDrawable);
+            // The HAL renders into a SurfaceView buffer.
+            mTextureView.setVisibility(View.GONE);
+
+            // The preview surface is a separate, opaque layer that is not affected by the page's
+            // enter animation, so creating it early briefly reveals an unmasked square through the
+            // still-fading page. Keep it hidden until the page has settled.
+            mSurfaceView.postDelayed(this::revealSurface, PREVIEW_REVEAL_FALLBACK_MS);
+
+            // Pin the surface to a size the HAL supports.
+            mSurfaceView.getHolder().setFixedSize(
+                    getResources().getInteger(R.integer.face_preview_width),
+                    getResources().getInteger(R.integer.face_preview_height));
+
+            return;
+        }
 
         mCameraManager = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
+    }
+
+    public void revealSurface() {
+        if (!mHalOwnsCamera || mSurfaceView == null || mPreviewRevealed) {
+            return;
+        }
+        mPreviewRevealed = true;
+        mSurfaceView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        if (mHalOwnsCamera) {
+            // The face HAL opens the camera itself and renders into this SurfaceView.
+            final SurfaceHolder holder = mSurfaceView.getHolder();
+            holder.addCallback(mSurfaceHolderCallback);
+            if (holder.getSurface() != null && holder.getSurface().isValid()) {
+                mPreviewSurface = holder.getSurface();
+                notifySurfaceReady();
+            }
+            return;
+        }
 
         // When the screen is turned off and turned back on, the SurfaceTexture is already
         // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
@@ -217,26 +276,51 @@ public class FaceEnrollPreviewFragment extends InstrumentedPreferenceFragment
     @Override
     public void onPause() {
         super.onPause();
-        closeCamera();
+        if (mHalOwnsCamera) {
+            mSurfaceView.getHolder().removeCallback(mSurfaceHolderCallback);
+            mPreviewSurface = null;
+        } else {
+            closeCamera();
+        }
     }
 
     @Override
     public void onEnrollmentError(int errMsgId, CharSequence errString) {
-        mAnimationDrawable.onEnrollmentError(errMsgId, errString);
+        mProgressView.setErrorState();
     }
 
     @Override
     public void onEnrollmentHelp(int helpMsgId, CharSequence helpString) {
-        mAnimationDrawable.onEnrollmentHelp(helpMsgId, helpString);
+        mProgressView.setHelpState();
     }
 
     @Override
     public void onEnrollmentProgressChange(int steps, int remaining) {
-        mAnimationDrawable.onEnrollmentProgressChange(steps, remaining);
+        mProgressView.setProgress(steps, remaining);
+        if (remaining == 0) mProgressView.setCompleteState();
     }
 
     public void setListener(ParticleCollection.Listener listener) {
         mListener = listener;
+    }
+
+    /** Runs the listener once the surface returned by {@link #getPreviewSurface} is ready. */
+    public void setSurfaceReadyListener(Runnable listener) {
+        mSurfaceReadyListener = listener;
+        notifySurfaceReady();
+    }
+
+    /** Returns the surface the face HAL should render its camera preview into. */
+    public Surface getPreviewSurface() {
+        return mPreviewSurface;
+    }
+
+    private void notifySurfaceReady() {
+        if (mPreviewSurface != null && mSurfaceReadyListener != null) {
+            final Runnable listener = mSurfaceReadyListener;
+            mSurfaceReadyListener = null;
+            listener.run();
+        }
     }
 
     /**
