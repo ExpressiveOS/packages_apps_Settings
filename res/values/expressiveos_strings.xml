@@ -319,4 +319,5 @@
     <string name="wifi_timeout_summary">Do not automatically turn off WiFi</string>
     <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="wifi_timeout_summary_auto">WiFi will turn off after <ns0:g id="timeout_description">%1$s</ns0:g> if no network connected</string>
     <string name="x_reality_engine_mode_title">X-Reality engine</string>
+    <string name="build_date">Build date</string>
 </resources>

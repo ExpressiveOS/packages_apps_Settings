@@ -14,6 +14,7 @@ import com.android.settings.contract.TAG_DEVICE_STATE_PREFERENCE
 import com.android.settingslib.metadata.PreferenceAvailabilityProvider
 import com.android.settingslib.metadata.PreferenceMetadata
 import com.android.settingslib.metadata.PreferenceSummaryProvider
+import com.android.settingslib.metadata.preferencesapi.preconditions.PreconditionStability
 import com.android.settingslib.preference.PreferenceBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -29,13 +30,17 @@ class ExpressiveVendorSecurityPatchLevelPreference :
         get() = "vendor_security_patch"
 
     override val purpose: Int
-        get() = R.string.security_patch_level_purpose
+        get() = R.string.security_key_purpose
 
     override val title: Int
         get() = R.string.vendor_security_patch
 
     override val indexable
         get() = false
+
+    override val availabilityDescription = "The device must have a vendor security patch level."
+
+    override fun getAvailabilityStability() = PreconditionStability.STABLE_UNTIL_APK_UPDATE
 
     override fun tags(context: Context) = arrayOf(TAG_DEVICE_STATE_PREFERENCE)
 
