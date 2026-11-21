@@ -7,6 +7,7 @@ package com.android.settings.deviceinfo.firmwareversion;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -160,10 +161,6 @@ public class GlowView extends View {
     }
 
     private void init(Context ctx) {
-        final int ink = resolveInk(ctx);
-        // Light ink means a dark surface
-        mOnDark = Color.luminance(ink) > 0.5f;
-
         for (String data : ctx.getResources().getStringArray(R.array.expressiveos_logo_paths)) {
             mLogoUnits.addPath(PathParser.createPathFromPathData(data));
         }
@@ -189,17 +186,43 @@ public class GlowView extends View {
         mStrokePaint.setStrokeCap(Paint.Cap.ROUND);
 
         mShineFill.setStyle(Paint.Style.FILL);
-        mShineFill.setColor(ink);
-        mShineFill.setAlpha(SHINE_FILL_ALPHA);
-
         mShineStroke.setStyle(Paint.Style.STROKE);
         mShineStroke.setStrokeJoin(Paint.Join.ROUND);
-        mShineStroke.setColor(ink);
 
         mBandPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        mSparklePaint.setColor(ink);
+
+        updateThemeColors(ctx, null);
+    }
+
+    private void updateThemeColors(Context ctx, Configuration config) {
+        final int ink = resolveInk(ctx);
+        final int nightMask = config != null
+                ? (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                : Configuration.UI_MODE_NIGHT_UNDEFINED;
+        // Light ink means a dark surface; prefer explicit uiMode when provided by onConfigurationChanged
+        mOnDark = nightMask != Configuration.UI_MODE_NIGHT_UNDEFINED
+                ? (nightMask == Configuration.UI_MODE_NIGHT_YES)
+                : (Color.luminance(ink) > 0.5f);
+        final int effectiveInk = (Color.luminance(ink) > 0.5f) == mOnDark
+                ? ink
+                : (mOnDark ? Color.WHITE : Color.BLACK);
+
+        mShineFill.setColor(effectiveInk);
+        mShineFill.setAlpha(SHINE_FILL_ALPHA);
+        mShineStroke.setColor(effectiveInk);
+        mSparklePaint.setColor(effectiveInk);
 
         applyPalette(ctx);
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateThemeColors(getContext(), newConfig);
+        if (mScale > 0f) {
+            rebuildHolo();
+        }
+        invalidate();
     }
 
     // A holiday theme's colours while its banner is on, else Bloom's: the sweep
@@ -311,7 +334,7 @@ public class GlowView extends View {
      * are now.
      */
     public void restartAnimation() {
-        applyPalette(getContext());
+        updateThemeColors(getContext(), null);
         if (mScale > 0f) rebuildHolo();
         mAnimate = ValueAnimator.areAnimatorsEnabled();
         mStartTime = SystemClock.uptimeMillis();
