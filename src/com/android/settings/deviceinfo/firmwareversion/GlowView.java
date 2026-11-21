@@ -8,6 +8,7 @@ package com.android.settings.deviceinfo.firmwareversion;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -38,8 +39,9 @@ import com.android.settings.R;
  * holiday's colours instead, read when the view is made and again on
  * restartAnimation() (see KEY_HOLIDAY_PALETTE).
  *
- * The animation loops for as long as the view shows, unless setAnimationLimit()
- * stops it on a still frame.
+ * Plays one SWEEP_MS sweep by default and holds the final still frame (pass 0
+ * to setAnimationLimit() for an unbounded loop). Blurred alpha masks are
+ * pre-rasterized once per view size in onSizeChanged().
  *
  * All geometry is expressed in the 1080x240 viewport of
  * ic_expressiveos_logo_outline and scaled to fit the view (centerInside).
@@ -114,9 +116,10 @@ public class GlowView extends View {
     private final Matrix mMatrix = new Matrix();
     private final Matrix mShaderMatrix = new Matrix();
 
-    private final Paint mGlowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint mLeftFringePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint mRightFringePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mGlowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+    private final Paint mLeftFringePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+    private final Paint mRightFringePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private final Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mShineFill = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -130,6 +133,8 @@ public class GlowView extends View {
             Shader.TileMode.CLAMP);
     private LinearGradient mHolo;
     private int[] mHoloColors;
+    private Bitmap mGlowMask;
+    private Bitmap mFringeMask;
 
     private float mScale;
     private float mOx;
@@ -137,7 +142,7 @@ public class GlowView extends View {
     private boolean mOnDark;
     private boolean mAnimate = true;
     private long mStartTime;
-    private long mAnimationLimit;
+    private long mAnimationLimit = SWEEP_MS;
 
     public GlowView(Context ctx) {
         super(ctx);
@@ -170,15 +175,11 @@ public class GlowView extends View {
         mStar.quadTo(0f, 0f, 0f, -1f);
         mStar.close();
 
-        mGlowPaint.setStyle(Paint.Style.STROKE);
-        mGlowPaint.setStrokeJoin(Paint.Join.ROUND);
+        mMaskPaint.setStyle(Paint.Style.STROKE);
+        mMaskPaint.setStrokeJoin(Paint.Join.ROUND);
+        mMaskPaint.setColor(Color.WHITE);
+
         mGlowPaint.setAlpha(GLOW_ALPHA);
-
-        mLeftFringePaint.setStyle(Paint.Style.STROKE);
-        mLeftFringePaint.setStrokeJoin(Paint.Join.ROUND);
-
-        mRightFringePaint.setStyle(Paint.Style.STROKE);
-        mRightFringePaint.setStrokeJoin(Paint.Join.ROUND);
 
         mFillPaint.setStyle(Paint.Style.FILL);
         mFillPaint.setAlpha(FILL_ALPHA);
@@ -296,10 +297,9 @@ public class GlowView extends View {
     }
 
     /**
-     * Stops the animation ms after it starts (SWEEP_MS for one sweep) and holds
-     * that frame, without a shine or sparkle: one that wouldn't be over by then
-     * isn't started. It is also the still frame shown with animations off.
-     * 0, the default, loops for as long as the view shows.
+     * Stops the animation ms after it starts (SWEEP_MS for one sweep, the
+     * default) and holds that frame, without a shine or sparkle: one that
+     * wouldn't be over by then isn't started. Pass 0 to loop indefinitely.
      */
     public void setAnimationLimit(long ms) {
         mAnimationLimit = Math.max(0L, ms);
@@ -326,6 +326,16 @@ public class GlowView extends View {
         mStartTime = SystemClock.uptimeMillis();
     }
 
+    private Bitmap buildAlphaMask(int w, int h, float strokeWidth, float radius) {
+        final Bitmap mask = Bitmap.createBitmap(w, h, Bitmap.Config.ALPHA_8);
+        mMaskPaint.setStrokeWidth(strokeWidth);
+        mMaskPaint.setMaskFilter(new BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL));
+        new Canvas(mask).drawPath(mLogo, mMaskPaint);
+        mMaskPaint.setMaskFilter(null);
+        mask.prepareToDraw();
+        return mask;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -337,21 +347,18 @@ public class GlowView extends View {
         mMatrix.postTranslate(mOx, mOy);
         mLogoUnits.transform(mMatrix, mLogo);
 
-        final BlurMaskFilter glowBlur = new BlurMaskFilter(
-                blurRadius(GLOW_SIGMA * mScale), BlurMaskFilter.Blur.NORMAL);
-        final BlurMaskFilter fringeBlur = new BlurMaskFilter(
-                blurRadius(FRINGE_SIGMA * mScale), BlurMaskFilter.Blur.NORMAL);
-
-        mGlowPaint.setStrokeWidth(GLOW_STROKE * mScale);
-        mGlowPaint.setMaskFilter(glowBlur);
-        mLeftFringePaint.setStrokeWidth(FRINGE_STROKE * mScale);
-        mLeftFringePaint.setMaskFilter(fringeBlur);
-        mRightFringePaint.setStrokeWidth(FRINGE_STROKE * mScale);
-        mRightFringePaint.setMaskFilter(fringeBlur);
         mStrokePaint.setStrokeWidth(MAIN_STROKE * mScale);
         mShineStroke.setStrokeWidth(MAIN_STROKE * mScale);
 
-        rebuildHolo();
+        if (w > 0 && h > 0 && mScale > 0f) {
+            mGlowMask = buildAlphaMask(w, h, GLOW_STROKE * mScale, blurRadius(GLOW_SIGMA * mScale));
+            mFringeMask = buildAlphaMask(w, h, FRINGE_STROKE * mScale, blurRadius(FRINGE_SIGMA * mScale));
+            rebuildHolo();
+        } else {
+            mGlowMask = null;
+            mFringeMask = null;
+            mHolo = null;
+        }
     }
 
     private void rebuildHolo() {
@@ -381,18 +388,14 @@ public class GlowView extends View {
         mFillPaint.setShader(mHolo);
         mStrokePaint.setShader(mHolo);
 
-        // Soft glow, then the fringe (blue and violet in Bloom)
-        canvas.drawPath(mLogo, mGlowPaint);
-
-        canvas.save();
-        canvas.translate(-FRINGE_SHIFT * mScale, 0f);
-        canvas.drawPath(mLogo, mLeftFringePaint);
-        canvas.restore();
-
-        canvas.save();
-        canvas.translate(FRINGE_SHIFT * mScale, 0f);
-        canvas.drawPath(mLogo, mRightFringePaint);
-        canvas.restore();
+        // Pre-rasterized alpha masks for soft glow and left/right fringes
+        if (mGlowMask != null) {
+            canvas.drawBitmap(mGlowMask, 0f, 0f, mGlowPaint);
+        }
+        if (mFringeMask != null) {
+            canvas.drawBitmap(mFringeMask, -FRINGE_SHIFT * mScale, 0f, mLeftFringePaint);
+            canvas.drawBitmap(mFringeMask, FRINGE_SHIFT * mScale, 0f, mRightFringePaint);
+        }
 
         // Glassy fill and gradient outline
         canvas.drawPath(mLogo, mFillPaint);

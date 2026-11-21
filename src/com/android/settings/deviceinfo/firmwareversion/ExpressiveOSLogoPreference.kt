@@ -17,7 +17,7 @@ import com.android.settingslib.metadata.UI_ONLY_PREFERENCE
 import com.android.settingslib.preference.PreferenceBinding
 import com.android.settingslib.widget.LayoutPreference
 
-/** ExpressiveOS logo banner on the Android version screen. Tapping opens the Telegram group. */
+/** ExpressiveOS logo banner on the Android version screen. Tapping replays the sweep and opens the Telegram group. */
 class ExpressiveOSLogoPreference :
     PreferenceMetadata, PreferenceBinding, Preference.OnPreferenceClickListener {
 
@@ -38,13 +38,19 @@ class ExpressiveOSLogoPreference :
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
         // GlowView resolves its own ink color from the current theme.
-        (preference as? LayoutPreference)
-            ?.findViewById<View>(R.id.expressiveos_logo_container)
-            ?.let { ExpressiveLogoAnimator.bind(it) }
+        (preference as? LayoutPreference)?.let { layoutPref ->
+            layoutPref.findViewById<View>(R.id.expressiveos_logo_container)
+                ?.let { ExpressiveLogoAnimator.bind(it) }
+            layoutPref.findViewById<GlowView>(R.id.expressiveos_rgb_glow)
+                ?.setAnimationLimit(GlowView.SWEEP_MS)
+        }
         preference.onPreferenceClickListener = this
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {
+        (preference as? LayoutPreference)
+            ?.findViewById<GlowView>(R.id.expressiveos_rgb_glow)
+            ?.restartAnimation()
         val context = preference.context
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(WEBSITE_URL))
         if (context.packageManager.queryIntentActivities(intent, 0).isEmpty()) {

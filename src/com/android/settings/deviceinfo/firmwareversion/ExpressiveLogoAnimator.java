@@ -24,6 +24,7 @@ public final class ExpressiveLogoAnimator {
         if (logo != null) {
             logo.setVisibility(View.INVISIBLE);
         }
+        holo.setAnimationLimit(GlowView.SWEEP_MS);
         holo.setVisibility(View.VISIBLE);
     }
 }
