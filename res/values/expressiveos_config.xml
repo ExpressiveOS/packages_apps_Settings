@@ -7,8 +7,7 @@
     <!-- Whether to show vendor security patch level -->
     <bool name="config_show_vendor_patch_level" translatable="false">true</bool>
 
-    <!-- ComponentName to launch a vendor-specific enrollment activity if available -->
-<!-- Whether or not to use traffic light enroll -->
+    <!-- Whether or not to use traffic light enroll -->
     <bool name="config_face_enroll_use_traffic_light">false</bool>
 
     <!-- Traffic light package to use -->
