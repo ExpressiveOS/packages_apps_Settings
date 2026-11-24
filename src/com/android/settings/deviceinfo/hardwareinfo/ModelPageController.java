@@ -120,7 +120,7 @@ public class ModelPageController extends BasePreferenceController {
             "https://en.wikipedia.org/w/api.php?action=query&format=json&list=search"
             + "&srlimit=1&srnamespace=0&srsearch=%s";
     private static final String EVO_OTA_URL =
-            "https://raw.githubusercontent.com/denson9874/expressiveos_ota/%s/builds/%s.json";
+            "https://raw.githubusercontent.com/denson9874/expressiveos_ota/%s/builds/v2/%s.json";
 
     // Branch lookup order for OTA JSON resolution. ExpressiveOS has a single
     // feed on main.
