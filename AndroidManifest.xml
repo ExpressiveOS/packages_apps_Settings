@@ -6435,6 +6435,7 @@
         <!-- Face enroll -->
         <activity android:theme="@style/SudThemeGlif.Light"
                   android:name="com.google.android.settings.biometrics.face.FaceEnrollActivityDirector"
+                  android:permission="com.android.settings.USE_BIOMETRIC_PROVIDER"
                   android:exported="true"
                   android:screenOrientation="portrait">
             <intent-filter>
