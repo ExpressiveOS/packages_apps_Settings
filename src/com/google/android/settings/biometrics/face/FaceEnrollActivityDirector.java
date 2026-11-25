@@ -10,6 +10,8 @@ import com.android.settings.R;
 import com.android.settings.biometrics.face.FaceEnrollEnrolling;
 
 public class FaceEnrollActivityDirector extends FragmentActivity {
+    private static final String KEY_FIRST_TIME = "first_time";
+
     private Intent mExtras;
     private boolean mFirstTime = true;
 
@@ -17,6 +19,15 @@ public class FaceEnrollActivityDirector extends FragmentActivity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         mExtras = getIntent();
+        if (bundle != null) {
+            mFirstTime = bundle.getBoolean(KEY_FIRST_TIME, true);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_FIRST_TIME, mFirstTime);
     }
 
     @Override
