@@ -571,7 +571,7 @@ public class ModelPageController extends BasePreferenceController {
         setActionLabels(content);
         content.setOnClickListener(v -> copyToClipboard(v, label, value, false));
         content.setOnLongClickListener(v -> {
-            copyToClipboard(label, value, false);
+            copyToClipboard(v, label, value, false);
             return true;
         });
     }
@@ -607,12 +607,13 @@ public class ModelPageController extends BasePreferenceController {
                 mContext.getString(android.R.string.copy), null);
 
         content.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
             mSerialRevealed = !mSerialRevealed;
             valueView.setText(mSerialRevealed ? serial : maskSerial(serial));
             updateSerialDescription(valueView, serial);
         });
         content.setOnLongClickListener(v -> {
-            copyToClipboard(label, serial, true);
+            copyToClipboard(v, label, serial, true);
             return true;
         });
     }
@@ -666,7 +667,9 @@ public class ModelPageController extends BasePreferenceController {
 
     private void styleRows(LinearLayout list) {
         final int n = list.getChildCount();
-        final float outer = dimenPx("settingslib_preference_corner_radius", 20);
+        final float outer = Math.max(
+                dimenPx("settingslib_preference_corner_radius", 24),
+                mContext.getResources().getDimension(R.dimen.model_row_outer_radius));
         final float inner = mContext.getResources().getDimension(R.dimen.model_row_inner_radius);
         final float pressed =
                 mContext.getResources().getDimension(R.dimen.model_row_pressed_radius);
@@ -840,8 +843,8 @@ public class ModelPageController extends BasePreferenceController {
             if (!ValueAnimator.areAnimatorsEnabled()) {
                 snap(mCorners, mCornersHolder, emphasis);
                 apply(emphasis);
-                if (mScaleX != null) {
-                    final float scale = 1f - 0.05f * emphasis;
+                if (mScaleX != null && mScaleY != null) {
+                    final float scale = 1f - 0.02f * emphasis;
                     if (mScaleX.isRunning()) mScaleX.cancel();
                     if (mScaleY.isRunning()) mScaleY.cancel();
                     mView.setScaleX(scale);
@@ -850,8 +853,8 @@ public class ModelPageController extends BasePreferenceController {
                 return;
             }
             mCorners.animateToFinalPosition(emphasis);
-            if (mScaleX != null) {
-                final float scale = 1f - 0.05f * emphasis;
+            if (mScaleX != null && mScaleY != null) {
+                final float scale = 1f - 0.02f * emphasis;
                 mScaleX.animateToFinalPosition(scale);
                 mScaleY.animateToFinalPosition(scale);
             }
@@ -1142,7 +1145,10 @@ public class ModelPageController extends BasePreferenceController {
         if (githubUrl != null) {
             card.setClickable(true);
             card.setFocusable(true);
-            card.setOnClickListener(v -> openUrl(githubUrl));
+            card.setOnClickListener(v -> {
+                v.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+                openUrl(githubUrl);
+            });
             styleMaintainerCard(card);
         } else {
             card.setClickable(false);
@@ -1178,7 +1184,7 @@ public class ModelPageController extends BasePreferenceController {
 
         final boolean[] state = new boolean[2]; // pressed, focused
         final CornerSpring corners =
-                new CornerSpring(card, bg, base, down, false, newFocusRing(card));
+                new CornerSpring(card, bg, base, down, true, newFocusRing(card));
         final Runnable apply = () -> corners.to(state[0] || state[1] ? 1f : 0f);
         card.setOnTouchListener((v, ev) -> {
             switch (ev.getActionMasked()) {

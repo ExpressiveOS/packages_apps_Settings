@@ -16,9 +16,10 @@
     <dimen name="model_loader_size">@dimen/model_tile_size</dimen>
     <dimen name="model_maintainer_radius">28dp</dimen>
     <dimen name="model_chip_radius">12dp</dimen>
-    <!-- Segmented spec rows: inner corner at rest, and the shape a pressed row morphs to. -->
+    <!-- Segmented spec rows: 24dp outer corner, 4dp inner corner, 20dp pressed morph. -->
+    <dimen name="model_row_outer_radius">24dp</dimen>
     <dimen name="model_row_inner_radius">4dp</dimen>
-    <dimen name="model_row_pressed_radius">16dp</dimen>
+    <dimen name="model_row_pressed_radius">20dp</dimen>
     <!-- How far the hero surfaces rise while fading in. -->
     <dimen name="model_rise_offset">12dp</dimen>
     <!-- Cap for a spec row label so a long label cannot squeeze its value at large font sizes. -->

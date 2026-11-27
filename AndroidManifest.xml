@@ -274,7 +274,7 @@
                   android:launchMode="singleTask"
                   android:taskAffinity=""
                   android:excludeFromRecents="true"
-                  android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight"/>
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight"/>
 
         <activity android:name=".SubSettings"
                   android:exported="false"
@@ -702,7 +702,7 @@
                   android:excludeFromRecents="true"
                   android:exported="true"
                   android:permission="android.permission.NETWORK_STACK"
-                  android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight">
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight">
             <!-- TODO: Consider removing below two intent filters.
                  It seems like below two intent filters can be removed because when the notification
                  is clicked, this activity will be launched anyway. -->
@@ -3568,7 +3568,7 @@
 
         <activity android:name="com.android.settings.development.DSULoader"
                   android:label="Select DSU Package"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
+                  android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight"
                   android:exported="true" >
             <intent-filter>
                 <action android:name="android.settings.development.START_DSU_LOADER"/>
@@ -3577,7 +3577,7 @@
         </activity>
         <activity android:name=".development.DSUTermsOfServiceActivity"
                   android:label="Terms of Service"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
+                  android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight" />
 
         <activity android:name=".development.storage.BlobInfoListView"
                   android:label="@string/shared_data_title" />
@@ -3707,7 +3707,7 @@
                   android:excludeFromRecents="true"
                   android:permission="android.permission.BLUETOOTH_CONNECT"
                   android:exported="true"
-                  android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight">
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight">
             <intent-filter android:priority="1">
                 <action android:name="android.bluetooth.device.action.CONNECTION_ACCESS_REQUEST" />
                 <action android:name="android.bluetooth.device.action.CONNECTION_ACCESS_CANCEL" />
@@ -3726,7 +3726,7 @@
 
         <activity android:name="ActivityPicker"
                 android:label="@string/activity_picker_label"
-                android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight"
+                android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight"
                 android:exported="true"
                 android:finishOnCloseSystemDialogs="true">
             <intent-filter android:priority="1">
@@ -3767,7 +3767,7 @@
         <!-- Standard picker for widgets -->
         <activity android:name="AppWidgetPickActivity"
                 android:label="@string/widget_picker_title"
-                android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight"
+                android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight"
                 android:exported="true"
                 android:finishOnCloseSystemDialogs="true">
             <intent-filter android:priority="1">
@@ -3777,7 +3777,7 @@
         </activity>
 
         <activity android:name="AllowBindAppWidgetActivity"
-                android:theme="@*android:style/Theme.DeviceDefault.Dialog.Alert.DayNight"
+                android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight"
                 android:finishOnCloseSystemDialogs="true"
                 android:exported="true"
                 android:excludeFromRecents="true">
@@ -4105,7 +4105,7 @@
                   android:label="@string/nfc_payment_set_default_label"
                   android:excludeFromRecents="true"
                   android:exported="true"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert">
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight">
             <intent-filter android:priority="1">
                 <action android:name="android.nfc.cardemulation.action.ACTION_CHANGE_DEFAULT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -4567,7 +4567,7 @@
         <!-- Confirmation dialog for enabling notification access from CompanionDeviceManager -->
         <activity android:name=".notification.NotificationAccessConfirmationActivity"
                   android:taskAffinity=".notification.NotificationAccessConfirmationActivity"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert" />
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight" />
 
         <receiver android:name="com.android.settingslib.bluetooth.BluetoothDiscoverableTimeoutReceiver"
             android:exported="true">
@@ -4626,7 +4626,7 @@
 
         <activity
             android:name=".wifi.RequestToggleWiFiActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert"
+            android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight"
             android:excludeFromRecents="true"
             android:exported="true"
             android:permission="android.permission.CHANGE_WIFI_STATE">
@@ -5111,7 +5111,7 @@
                   android:targetActivity="Settings$WebViewAppPickerActivity"
                   android:exported="true"
                   android:excludeFromRecents="true"
-                  android:theme="@*android:style/Theme.DeviceDefault.Light.Dialog.Alert">
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight">
             <intent-filter>
                 <action android:name="android.settings.WEBVIEW_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -5632,10 +5632,10 @@
         </activity>
 
         <activity android:name=".homepage.contextualcards.ContextualCardFeedbackDialog"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert" />
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight" />
 
         <activity android:name=".homepage.contextualcards.FaceReEnrollDialog"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert" />
+                  android:theme="@style/Theme.Settings.AlertDialog.Expressive.DayNight" />
 
         <activity
             android:name="Settings$WifiCallingDisclaimerActivity"

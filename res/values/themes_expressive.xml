@@ -110,4 +110,23 @@
         <item name="android:buttonBarNegativeButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
     </style>
+
+    <!-- Material 3 Expressive DayNight dialog theme for platform AlertActivity / AlertDialog -->
+    <style name="Theme.Settings.AlertDialog.Expressive.DayNight"
+           parent="@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive">
+        <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+        <item name="alertDialogTheme">@style/Theme.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
+    <!-- Material 3 Expressive DayNight dialog theme for non-Alert Dialog / ListActivity hosts -->
+    <style name="Theme.Settings.Dialog.Expressive.DayNight"
+           parent="@android:style/Theme.DeviceDefault.Light.Dialog">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
+        <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="android:dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
+        <item name="android:windowTitleStyle">@style/Widget.SettingsLib.DialogWindowTitle</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
 </resources>

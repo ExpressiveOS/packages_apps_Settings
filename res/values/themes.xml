@@ -132,9 +132,14 @@
         <!-- Redefine the ActionBar style for contentInsetStart -->
         <item name="android:actionBarStyle">@style/Widget.ActionBar</item>
 
-        <!-- copied from Theme.DeviceDefault.Dialog.Alert -->
-        <item name="dialogCornerRadius">@*android:dimen/config_dialogCornerRadius</item>
-        <item name="android:windowTitleStyle">@*android:style/DialogWindowTitle.DeviceDefault</item>
+        <!-- Material 3 Expressive surface, 28dp corner radius, and HeadlineSmall title -->
+        <item name="colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
+        <item name="dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
+        <item name="android:windowTitleStyle">@style/Widget.SettingsLib.DialogWindowTitle</item>
         <item name="android:textAppearanceMedium">@style/TextAppearance.DialogMessage</item>
         <item name="buttonBarButtonStyle">@*android:style/Widget.DeviceDefault.Button.ButtonBar.AlertDialog</item>
     </style>

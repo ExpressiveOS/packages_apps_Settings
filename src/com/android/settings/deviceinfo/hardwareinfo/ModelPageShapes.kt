@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: Evolution X
+ * SPDX-FileCopyrightText: 2026 The ExpressiveOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -7,31 +8,42 @@
 
 package com.android.settings.deviceinfo.hardwareinfo
 
+import android.animation.ValueAnimator
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ContainedLoadingIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.toShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.toPath
 import com.android.settings.R
 import com.android.settings.widget.insetFocusRing
@@ -73,6 +85,19 @@ object ModelPageShapes {
         return android.graphics.Path(source).apply { transform(m) }
     }
 
+    @Composable
+    private fun ModelExpressiveTheme(content: @Composable () -> Unit) {
+        SettingsTheme {
+            MaterialExpressiveTheme(
+                colorScheme = MaterialTheme.colorScheme,
+                shapes = MaterialTheme.shapes,
+                typography = MaterialTheme.typography,
+                motionScheme = MotionScheme.expressive(),
+                content = content,
+            )
+        }
+    }
+
     /** Clips [view] to the SoftBurst used for the verified badge. */
     @JvmStatic
     fun clipToBadge(view: View) {
@@ -110,8 +135,8 @@ object ModelPageShapes {
     /**
      * Shows or stops the shape-morphing [ContainedLoadingIndicator] in [view]. It draws its own
      * Cookie9Sided container in the same 12% onPrimaryContainer tint as the tile, so the tile's
-     * static cookie is switched off while it runs. The composition is only kept while loading so
-     * the animation doesn't run while the view is hidden.
+     * static cookie is switched off while it runs. Respects reduced-motion (`ANIMATOR_DURATION_SCALE == 0f`)
+     * by rendering a static Cookie9Sided container instead of an infinite morph loop.
      */
     @JvmStatic
     fun setLoaderActive(view: ComposeView, active: Boolean) {
@@ -123,21 +148,31 @@ object ModelPageShapes {
             ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
         )
         view.setContent {
-            SettingsTheme {
+            ModelExpressiveTheme {
                 val colors = MaterialTheme.colorScheme
-                ContainedLoadingIndicator(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = colors.onPrimaryContainer.copy(alpha = 0.12f),
-                    indicatorColor = colors.onPrimaryContainer,
-                    containerShape = MaterialShapes.Cookie9Sided.toShape(),
-                )
+                val animatorsEnabled = remember { ValueAnimator.areAnimatorsEnabled() }
+                val cookieShape = MaterialShapes.Cookie9Sided.toShape()
+                if (animatorsEnabled) {
+                    ContainedLoadingIndicator(
+                        modifier = Modifier.fillMaxSize(),
+                        containerColor = colors.onPrimaryContainer.copy(alpha = 0.12f),
+                        indicatorColor = colors.onPrimaryContainer,
+                        containerShape = cookieShape,
+                    )
+                } else {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        shape = cookieShape,
+                        color = colors.onPrimaryContainer.copy(alpha = 0.12f),
+                    ) {}
+                }
             }
         }
     }
 
     /**
-     * Composes the maintainer's Support button into [view] as a Material 3 [Button] with the
-     * expressive shape morph.
+     * Composes the maintainer's Support button into [view] as a Material 3 Expressive [Button]
+     * with pinned pill-to-squircle pressed shape morph and tactile feedback.
      */
     @JvmStatic
     fun setSupportButton(view: ComposeView, onClick: Runnable) {
@@ -145,10 +180,17 @@ object ModelPageShapes {
             ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
         )
         view.setContent {
-            SettingsTheme {
-                val shapes = ButtonDefaults.shapes()
+            ModelExpressiveTheme {
+                val hostView = LocalView.current
+                val shapes = ButtonDefaults.shapes(
+                    shape = CircleShape,
+                    pressedShape = RoundedCornerShape(16.dp),
+                )
                 Button(
-                    onClick = { onClick.run() },
+                    onClick = {
+                        hostView.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                        onClick.run()
+                    },
                     shapes = shapes,
                     modifier = Modifier.insetFocusRing(
                         shape = shapes.shape,
@@ -162,7 +204,10 @@ object ModelPageShapes {
                             Modifier.size(ButtonDefaults.iconSizeFor(ButtonDefaults.MinHeight)),
                     )
                     Spacer(Modifier.size(ButtonDefaults.iconSpacingFor(ButtonDefaults.MinHeight)))
-                    Text(stringResource(R.string.maintainer_support))
+                    Text(
+                        text = stringResource(R.string.maintainer_support),
+                        style = MaterialTheme.typography.labelLargeEmphasized,
+                    )
                 }
             }
         }

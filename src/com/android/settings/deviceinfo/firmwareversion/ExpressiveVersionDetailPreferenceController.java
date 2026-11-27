@@ -5,13 +5,17 @@
 
 package com.android.settings.deviceinfo.firmwareversion;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
+import android.view.View;
 
 import androidx.preference.Preference;
 
@@ -69,15 +73,19 @@ public class ExpressiveVersionDetailPreferenceController extends BasePreferenceC
         if (Utils.isMonkeyRunning()) {
             return false;
         }
+        final View hostView = findDecorView(preference.getContext());
         System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
         mHits[mHits.length - 1] = SystemClock.uptimeMillis();
         if (mHits[0] >= (SystemClock.uptimeMillis() - DELAY_TIMER_MILLIS)) {
-            if (mUserManager.hasUserRestriction(UserManager.DISALLOW_FUN)) {
+            if (mUserManager != null && mUserManager.hasUserRestriction(UserManager.DISALLOW_FUN)) {
                 if (mFunDisallowedAdmin != null && !mFunDisallowedBySystem) {
                     RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
                             mContext, mFunDisallowedAdmin);
                 }
                 return true;
+            }
+            if (hostView != null) {
+                hostView.performHapticFeedback(HapticFeedbackConstants.CONFIRM);
             }
             final Intent intent = new Intent(Intent.ACTION_MAIN)
                     .setClassName(PLATLOGO_PACKAGE_NAME, PLATLOGO_ACTIVITY_CLASS)
@@ -87,8 +95,21 @@ public class ExpressiveVersionDetailPreferenceController extends BasePreferenceC
             } catch (Exception e) {
                 Log.e(TAG, "Unable to start easter egg activity", e);
             }
+        } else if (hostView != null) {
+            hostView.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
         }
         return true;
+    }
+
+    private static View findDecorView(Context context) {
+        Context cur = context;
+        while (cur instanceof ContextWrapper) {
+            if (cur instanceof Activity) {
+                return ((Activity) cur).getWindow().getDecorView();
+            }
+            cur = ((ContextWrapper) cur).getBaseContext();
+        }
+        return null;
     }
 
     private void initializeAdminPermissions() {
