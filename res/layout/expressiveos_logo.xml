@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
      SPDX-FileCopyrightText: Evolution X
+     SPDX-FileCopyrightText: 2026 The ExpressiveOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/expressiveos_logo_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:background="@android:color/transparent"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:paddingBottom="6dp">
 
-    <com.android.settings.deviceinfo.firmwareversion.GlowView
-        android:id="@+id/expressiveos_rgb_glow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/expressiveos_logo_main"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:scaleType="centerInside"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_expressiveos_logo_outline" />
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
-</FrameLayout>
+        <com.android.settings.deviceinfo.firmwareversion.GlowView
+            android:id="@+id/expressiveos_rgb_glow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/expressiveos_logo_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_expressiveos_logo_outline" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/expressiveos_logo_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:text="@string/expressiveos_logo_community_hint"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:alpha="0.78"
+        android:importantForAccessibility="no" />
+
+</LinearLayout>

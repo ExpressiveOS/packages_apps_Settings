@@ -106,6 +106,14 @@
             android:order="-130"
             settings:userRestriction="no_adjust_volume"
             settings:controller="com.android.settings.notification.AssistantVolumePreferenceController"/>
+
+        <!-- Vertical expanded volume panel -->
+        <SwitchPreferenceCompat
+            android:key="volume_panel_vertical_sliders"
+            android:title="@string/volume_panel_vertical_sliders_title"
+            android:summary="@string/volume_panel_vertical_sliders_summary"
+            android:order="-125"
+            settings:controller="com.android.settings.notification.VerticalVolumeSlidersPreferenceController"/>
     </com.android.settingslib.widget.UntitledPreferenceCategory>
 
     <!-- Vibrations and haptics category -->
@@ -179,6 +187,14 @@
             android:order="-100"
             settings:controller="com.android.settings.sound.MediaControlsParentPreferenceController"
             settings:keywords="@string/keywords_media_controls"/>
+
+        <!-- ViPER4Android RE -->
+        <Preference
+            android:key="viper4android_settings"
+            android:title="@string/viper4android_title"
+            android:summary="@string/viper4android_summary"
+            android:order="-95"
+            settings:controller="com.android.settings.notification.Viper4AndroidPreferenceController"/>
 
         <com.android.settingslib.PrimarySwitchPreference
             android:key="gesture_prevent_ringing_sound"

@@ -48,6 +48,8 @@ class ExpressiveOSLogoPreference :
         // GlowView resolves its own ink color from the current theme.
         (preference as? LayoutPreference)?.let { layoutPref ->
             layoutPref.findViewById<View>(R.id.expressiveos_logo_container)?.let { container ->
+                container.contentDescription =
+                    preference.context.getString(R.string.expressiveos_logo_content_description)
                 ExpressiveLogoAnimator.bind(container)
                 bindPressSpring(container)
             }

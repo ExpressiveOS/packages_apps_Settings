@@ -17,7 +17,6 @@
 package com.android.settings.deviceinfo.firmwareversion
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.SystemProperties
 import androidx.preference.Preference
@@ -46,15 +45,9 @@ class AboutDeviceNamePreference :
 
     override fun tags(context: Context) = arrayOf(TAG_DEVICE_STATE_PREFERENCE)
 
-    // Tapping the entry launches the device changelog (nothing swallows the click).
-    override fun intent(context: Context): Intent? =
-        Intent().setClassName(
-            "com.android.settings",
-            "org.expressiveos.settings.fragments.about.ChangelogActivity",
-        )
-
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
+        preference.isSelectable = false
         preference.isCopyingEnabled = true
     }
 

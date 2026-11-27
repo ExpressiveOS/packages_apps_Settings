@@ -207,6 +207,9 @@
     <string name="kernel_version_purpose" translatable="false">The kernel version of the device</string>
     <string name="module_version_purpose" translatable="false">The date of the last system update</string>
     <string name="expressiveos_logo_purpose" translatable="false">ExpressiveOS logo banner; opens the community Telegram group</string>
+    <string name="eos_changelog_purpose" translatable="false">Opens the ExpressiveOS release changelog</string>
+    <string name="volume_panel_vertical_sliders_purpose" translatable="false">Switch between horizontal and vertical sliders in the expanded volume panel</string>
+    <string name="viper4android_purpose" translatable="false">Open ViPER4Android RE audio DSP settings</string>
     <string name="os_build_number_purpose" translatable="false">The device build number</string>
     <string name="os_firmware_version_purpose" translatable="false">The Android version name or number</string>
     <string name="security_key_purpose" translatable="false">The date of the last Android security update</string>

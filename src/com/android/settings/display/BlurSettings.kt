@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 AxionOS
+ * SPDX-FileCopyrightText: 2026 The ExpressiveOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,45 +17,66 @@
 package com.android.settings.display
 
 import android.app.WallpaperManager
+import android.app.settings.SettingsEnums
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemProperties
 import android.provider.Settings
+import android.view.CrossWindowBlurListeners.CROSS_WINDOW_BLUR_SUPPORTED
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.core.graphics.ColorUtils
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.FlashlightOn
-import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.AirplanemodeActive
-import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.Brightness4
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.FlashlightOn
+import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Wifi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -65,38 +87,53 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import com.android.axion.compose.preferences.PreferencePosition
-import com.android.axion.compose.preferences.SliderPreference
-import com.android.axion.compose.preferences.SwitchPreference
-import com.android.axion.compose.theme.AxionTheme
+import androidx.core.graphics.ColorUtils
 import com.android.settings.R
+import com.android.settings.SettingsPreferenceFragment
+import com.android.settings.search.BaseSearchIndexProvider
 import com.android.settings.widget.scrollbar
+import com.android.settingslib.search.SearchIndexable
+import com.android.settingslib.search.SearchIndexableRaw
+import com.android.settingslib.spa.framework.theme.settingsBackground
+import com.android.settingslib.spa.framework.theme.settingsCardBackground
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import kotlinx.coroutines.delay
-import kotlin.math.sin
 import kotlin.math.roundToInt
+import kotlinx.coroutines.delay
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveCorners
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveGroup
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveSwitchRow
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveTheme
 
-class BlurSettings : Fragment() {
+@SearchIndexable
+class BlurSettings : SettingsPreferenceFragment() {
+
+    override fun getMetricsCategory(): Int = SettingsEnums.DISPLAY
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        // Compose fragment, no preference XML resources to load.
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
+        savedInstanceState: Bundle?,
+    ): View =
+        ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AxionTheme {
+                ExpressiveTheme {
                     BlurSettingsScreen()
                 }
             }
         }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -111,23 +148,30 @@ class BlurSettings : Fragment() {
         val blurEnabledByDefault = SystemProperties.getBoolean("ro.custom.blur.enable", false)
 
         var blursEnabled by remember {
-            mutableStateOf(Settings.Global.getInt(cr, Settings.Global.DISABLE_WINDOW_BLURS, if (blurEnabledByDefault) 0 else 1) == 0)
+            mutableStateOf(
+                Settings.Global.getInt(
+                    cr,
+                    Settings.Global.DISABLE_WINDOW_BLURS,
+                    if (blurEnabledByDefault) 0 else 1,
+                ) == 0
+            )
         }
 
         var blurRadiusPct by remember {
-            mutableStateOf(
+            mutableFloatStateOf(
                 Settings.Secure.getFloat(
-                    cr,
-                    KEY_SYSTEM_BLUR_RADIUS_PCT,
-                    MAX_BLUR_RADIUS_PCT,
-                ).takeIf { it.isFinite() }
+                        cr,
+                        KEY_SYSTEM_BLUR_RADIUS_PCT,
+                        MAX_BLUR_RADIUS_PCT,
+                    )
+                    .takeIf { it.isFinite() }
                     ?.coerceIn(MIN_BLUR_RADIUS_PCT, MAX_BLUR_RADIUS_PCT)
                     ?: MAX_BLUR_RADIUS_PCT
             )
         }
 
         Scaffold(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            containerColor = MaterialTheme.colorScheme.settingsBackground,
         ) { paddingValues ->
             val listState = rememberLazyListState()
             LazyColumn(
@@ -135,48 +179,88 @@ class BlurSettings : Fragment() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .scrollbar(listState.scrollIndicatorState, Orientation.Vertical)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp)
+                    .scrollbar(listState.scrollIndicatorState, Orientation.Vertical),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             ) {
                 item {
-                    BlurIllustration(blursEnabled, blurRadiusPct)
+                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        BlurIllustration(blursEnabled, blurRadiusPct)
+                    }
                 }
 
                 item {
-                    SwitchPreference(
-                        title = stringResource(com.android.settingslib.R.string.window_blurs),
-                        checked = blursEnabled,
-                        onCheckedChange = { newValue ->
-                            blursEnabled = newValue
-                            Settings.Global.putInt(cr, Settings.Global.DISABLE_WINDOW_BLURS, if (blursEnabled) 0 else 1)
-                        },
-                        position = PreferencePosition.Single
-                    )
-                }
-
-                item {
-                    SliderPreference(
-                        title = "Blur Strength",
-                        summary = "",
-                        value = blurRadiusPct,
-                        onValueChange = { 
-                            blurRadiusPct = it
-                        },
-                        onValueChangeFinished = {
-                            Settings.Secure.putFloat(
-                                cr,
-                                KEY_SYSTEM_BLUR_RADIUS_PCT,
-                                blurRadiusPct,
+                    ExpressiveGroup(title = "") {
+                        item {
+                            ExpressiveSwitchRow(
+                                titleText = stringResource(com.android.settingslib.R.string.window_blurs),
+                                summaryText = stringResource(R.string.blur_settings_summary),
+                                isChecked = blursEnabled,
+                                onChange = { newValue ->
+                                    blursEnabled = newValue
+                                    Settings.Global.putInt(
+                                        cr,
+                                        Settings.Global.DISABLE_WINDOW_BLURS,
+                                        if (newValue) 0 else 1,
+                                    )
+                                },
                             )
-                        },
-                        valueRange = MIN_BLUR_RADIUS_PCT..MAX_BLUR_RADIUS_PCT,
-                        steps = BLUR_RADIUS_PCT_STEPS,
-                        displayValue = "${blurRadiusPct.roundToInt()}%",
-                        enabled = blursEnabled,
-                        position = PreferencePosition.Single
-                    )
+                        }
+                        item {
+                            val pctLabel = "${blurRadiusPct.roundToInt()}%"
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .alpha(if (blursEnabled) 1f else 0.60f),
+                                shape = ExpressiveCorners.last,
+                                color = MaterialTheme.colorScheme.settingsCardBackground,
+                                contentColor = MaterialTheme.colorScheme.onSurface,
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                                ) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.blur_strength_title),
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                        )
+                                        Text(
+                                            text = pctLabel,
+                                            style = MaterialTheme.typography.labelLarge,
+                                            color = MaterialTheme.colorScheme.primary,
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Slider(
+                                        value = blurRadiusPct,
+                                        onValueChange = { blurRadiusPct = it },
+                                        onValueChangeFinished = {
+                                            Settings.Secure.putFloat(
+                                                cr,
+                                                KEY_SYSTEM_BLUR_RADIUS_PCT,
+                                                blurRadiusPct,
+                                            )
+                                        },
+                                        valueRange = MIN_BLUR_RADIUS_PCT..MAX_BLUR_RADIUS_PCT,
+                                        enabled = blursEnabled,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .heightIn(min = 48.dp)
+                                            .semantics {
+                                                stateDescription = pctLabel
+                                            },
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -196,10 +280,14 @@ class BlurSettings : Fragment() {
                 .fillMaxWidth()
                 .height(340.dp)
                 .padding(vertical = 12.dp)
-                .clip(RoundedCornerShape(32.dp))
+                .clip(RoundedCornerShape(28.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f))
-                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f), RoundedCornerShape(32.dp)),
-            contentAlignment = Alignment.Center
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.25f),
+                    RoundedCornerShape(28.dp),
+                ),
+            contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier
@@ -208,18 +296,18 @@ class BlurSettings : Fragment() {
                     .clip(RoundedCornerShape(32.dp))
                     .border(4.dp, Color.Black.copy(alpha = 0.9f), RoundedCornerShape(32.dp))
                     .background(Color.Black)
-                    .padding(4.dp)
+                    .padding(4.dp),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(26.dp))
+                        .clip(RoundedCornerShape(26.dp)),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(26.dp))
+                            .clip(RoundedCornerShape(26.dp)),
                     ) {
                         WallpaperImage(
                             modifier = Modifier
@@ -227,18 +315,21 @@ class BlurSettings : Fragment() {
                                 .blur(
                                     (MAX_PREVIEW_BLUR_RADIUS_DP * radiusPct /
                                         MAX_BLUR_RADIUS_PCT).dp
-                                )
+                                ),
                         )
 
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(if (enabled) shadeColor else MaterialTheme.colorScheme.surfaceContainer)
+                                .background(
+                                    if (enabled) shadeColor
+                                    else MaterialTheme.colorScheme.surfaceContainer
+                                ),
                         )
 
-                        QSContent(enabled)
+                        QSContent()
                     }
-                    
+
                     StatusBar()
                 }
 
@@ -248,7 +339,7 @@ class BlurSettings : Fragment() {
                         .padding(top = 8.dp)
                         .size(10.dp)
                         .clip(CircleShape)
-                        .background(Color.Black)
+                        .background(Color.Black),
                 )
             }
         }
@@ -258,7 +349,7 @@ class BlurSettings : Fragment() {
     fun WallpaperImage(modifier: Modifier = Modifier) {
         val context = LocalContext.current
         val wallpaperManager = remember { WallpaperManager.getInstance(context) }
-        val drawable = remember { 
+        val drawable = remember {
             try {
                 wallpaperManager.drawable
             } catch (e: Exception) {
@@ -272,13 +363,16 @@ class BlurSettings : Fragment() {
                 painter = painter,
                 contentDescription = null,
                 modifier = modifier,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         } else {
             Box(
                 modifier = modifier.background(
                     Brush.verticalGradient(
-                        listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer)
+                        listOf(
+                            MaterialTheme.colorScheme.primaryContainer,
+                            MaterialTheme.colorScheme.secondaryContainer,
+                        )
                     )
                 )
             )
@@ -290,7 +384,9 @@ class BlurSettings : Fragment() {
         return remember(drawable) {
             object : Painter() {
                 override val intrinsicSize: Size
-                    get() = drawable?.let { Size(it.intrinsicWidth.toFloat(), it.intrinsicHeight.toFloat()) } ?: Size.Unspecified
+                    get() = drawable?.let {
+                        Size(it.intrinsicWidth.toFloat(), it.intrinsicHeight.toFloat())
+                    } ?: Size.Unspecified
 
                 override fun DrawScope.onDraw() {
                     drawable?.let {
@@ -319,13 +415,13 @@ class BlurSettings : Fragment() {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 time,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 10.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 Box(
@@ -345,7 +441,7 @@ class BlurSettings : Fragment() {
     }
 
     @Composable
-    fun QSContent(enabled: Boolean) {
+    fun QSContent() {
         val icons = listOf(
             Icons.Filled.Wifi,
             Icons.Filled.Bluetooth,
@@ -354,19 +450,19 @@ class BlurSettings : Fragment() {
             Icons.Filled.AirplanemodeActive,
             Icons.Filled.Nfc,
             Icons.Filled.Adb,
-            Icons.Filled.NotificationsActive
+            Icons.Filled.NotificationsActive,
         )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 32.dp, start = 12.dp, end = 12.dp, bottom = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             repeat(4) { rowIndex ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     repeat(2) { colIndex ->
                         val iconIndex = (rowIndex * 2 + colIndex) % icons.size
@@ -375,29 +471,31 @@ class BlurSettings : Fragment() {
                                 .height(28.dp)
                                 .weight(1f)
                                 .clip(RoundedCornerShape(16.dp))
-                                .background(
-                                    MaterialTheme.colorScheme.surfaceBright
-                                )
-                                .border(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f), RoundedCornerShape(16.dp)),
-                            contentAlignment = Alignment.CenterStart
+                                .background(MaterialTheme.colorScheme.settingsCardBackground)
+                                .border(
+                                    0.5.dp,
+                                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                                    RoundedCornerShape(16.dp),
+                                ),
+                            contentAlignment = Alignment.CenterStart,
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(2.dp)
+                                horizontalArrangement = Arrangement.spacedBy(2.dp),
                             ) {
                                 Box(
                                     modifier = Modifier
                                         .size(16.dp)
                                         .clip(CircleShape)
                                         .background(Color.Transparent),
-                                    contentAlignment = Alignment.Center
+                                    contentAlignment = Alignment.Center,
                                 ) {
                                     Icon(
                                         imageVector = icons[iconIndex],
                                         contentDescription = null,
                                         modifier = Modifier.size(10.dp),
-                                        tint = MaterialTheme.colorScheme.primary
+                                        tint = MaterialTheme.colorScheme.primary,
                                     )
                                 }
                                 Box(
@@ -405,7 +503,9 @@ class BlurSettings : Fragment() {
                                         .height(2.5.dp)
                                         .weight(1f)
                                         .clip(RoundedCornerShape(2.dp))
-                                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                                        .background(
+                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                                        )
                                 )
                             }
                         }
@@ -418,8 +518,8 @@ class BlurSettings : Fragment() {
                     .fillMaxWidth()
                     .height(28.dp)
                     .clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.surfaceBright),
-                contentAlignment = Alignment.CenterStart
+                    .background(MaterialTheme.colorScheme.settingsCardBackground),
+                contentAlignment = Alignment.CenterStart,
             ) {
                 Box(
                     modifier = Modifier
@@ -432,7 +532,7 @@ class BlurSettings : Fragment() {
                     imageVector = Icons.Filled.Brightness4,
                     contentDescription = null,
                     modifier = Modifier.padding(start = 8.dp).size(12.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
 
@@ -440,19 +540,20 @@ class BlurSettings : Fragment() {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
             ) {
-                Box(modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceBright),
-                    contentAlignment = Alignment.Center
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.settingsCardBackground),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         Icons.Filled.Settings,
                         null,
                         modifier = Modifier.size(12.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -463,8 +564,35 @@ class BlurSettings : Fragment() {
         private const val KEY_SYSTEM_BLUR_RADIUS_PCT = "system_blur_radius_pct"
         private const val MIN_BLUR_RADIUS_PCT = 0f
         private const val MAX_BLUR_RADIUS_PCT = 100f
-        private const val BLUR_RADIUS_PCT_STEPS = 99
         private const val MAX_PREVIEW_BLUR_RADIUS_DP = 34f
-    }
 
+        @JvmField
+        val SEARCH_INDEX_DATA_PROVIDER: BaseSearchIndexProvider =
+            object : BaseSearchIndexProvider() {
+                override fun isPageSearchEnabled(context: Context): Boolean =
+                    CROSS_WINDOW_BLUR_SUPPORTED
+
+                override fun getRawDataToIndex(
+                    context: Context,
+                    enabled: Boolean,
+                ): List<SearchIndexableRaw> {
+                    if (!CROSS_WINDOW_BLUR_SUPPORTED) return emptyList()
+                    val screenTitle = context.getString(com.android.settingslib.R.string.window_blurs)
+                    return listOf(
+                        SearchIndexableRaw(context).apply {
+                            key = "blur_settings_toggle"
+                            title = screenTitle
+                            summaryOn = context.getString(R.string.blur_settings_summary)
+                            this.screenTitle = screenTitle
+                        },
+                        SearchIndexableRaw(context).apply {
+                            key = "blur_settings_strength"
+                            title = context.getString(R.string.blur_strength_title)
+                            summaryOn = context.getString(R.string.blur_settings_summary)
+                            this.screenTitle = screenTitle
+                        },
+                    )
+                }
+            }
+    }
 }

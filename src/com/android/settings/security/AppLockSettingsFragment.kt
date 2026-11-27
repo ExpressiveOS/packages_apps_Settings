@@ -86,17 +86,21 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.android.internal.logging.nano.MetricsProto
+import android.app.settings.SettingsEnums
 import com.android.settings.R
 import com.android.settings.SettingsPreferenceFragment
 import com.android.settings.password.ChooseLockSettingsHelper
+import com.android.settings.search.BaseSearchIndexProvider
 import com.android.settings.widget.scrollbar
-import com.android.settingslib.spa.framework.theme.SettingsTheme
+import com.android.settingslib.search.SearchIndexable
+import com.android.settingslib.search.SearchIndexableRaw
+import com.android.settingslib.spa.framework.theme.settingsCardBackground
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.expressiveos.settings.fragments.miscellaneous.AppPickerItem
 import org.expressiveos.settings.fragments.miscellaneous.AppPickerSearchField
+import org.expressiveos.settings.fragments.miscellaneous.ExpressiveTheme
 
 import com.android.internal.app.AppLockCredentialUtils
 import com.android.settings.core.SubSettingLauncher
@@ -107,13 +111,14 @@ import android.os.CancellationSignal
 import androidx.compose.ui.viewinterop.AndroidView
 import com.android.internal.app.AppLockCustomCredentialView
 
+@SearchIndexable
 class AppLockSettingsFragment : SettingsPreferenceFragment() {
 
     private lateinit var authenticateLauncher: ActivityResultLauncher<Intent>
     val isAuthenticatedState = mutableStateOf(false)
     val isDeviceSecureState = mutableStateOf(true)
 
-    override fun getMetricsCategory(): Int = MetricsProto.MetricsEvent.VIEW_UNKNOWN
+    override fun getMetricsCategory(): Int = SettingsEnums.SECURITY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,7 +145,7 @@ class AppLockSettingsFragment : SettingsPreferenceFragment() {
     ): View = ComposeView(requireContext()).apply {
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
-            SettingsTheme {
+            ExpressiveTheme {
                 AppLockSettingsMainScreen(this@AppLockSettingsFragment)
             }
         }
@@ -173,7 +178,7 @@ class AppLockSettingsFragment : SettingsPreferenceFragment() {
     private fun showBiometricPromptForSettings(userId: Int) {
         val prompt = BiometricPrompt.Builder(requireContext())
             .setTitle(getString(R.string.app_lock_title))
-            .setSubtitle("Unlock App Lock Settings")
+            .setSubtitle(getString(R.string.app_lock_unlock_subtitle))
             .setNegativeButton(getString(R.string.cancel), requireActivity().mainExecutor) { _, _ -> }
             .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
@@ -188,6 +193,27 @@ class AppLockSettingsFragment : SettingsPreferenceFragment() {
                 }
             }
         )
+    }
+
+    companion object {
+        @JvmField
+        val SEARCH_INDEX_DATA_PROVIDER: BaseSearchIndexProvider =
+            object : BaseSearchIndexProvider() {
+                override fun getRawDataToIndex(
+                    context: Context,
+                    enabled: Boolean,
+                ): List<SearchIndexableRaw> {
+                    val titleText = context.getString(R.string.app_lock_title)
+                    return listOf(
+                        SearchIndexableRaw(context).apply {
+                            key = "app_lock_settings_screen"
+                            title = titleText
+                            summaryOn = context.getString(R.string.app_lock_dashboard_card_title)
+                            screenTitle = titleText
+                        }
+                    )
+                }
+            }
     }
 }
 
@@ -210,7 +236,7 @@ fun AppLockSettingsMainScreen(fragment: AppLockSettingsFragment) {
                 factory = { ctx ->
                     AppLockCustomCredentialView(ctx).apply {
                         setUserId(UserHandle.myUserId())
-                        setAppDetails("App Lock Settings", null)
+                        setAppDetails(fragment.getString(R.string.app_lock_title), null)
                         setOnUnlockListener(object : AppLockCustomCredentialView.OnUnlockListener {
                             override fun onUnlocked() {
                                 fragment.isAuthenticatedState.value = true
@@ -247,7 +273,7 @@ fun AppLockNotSecureContent(onSetLockClick: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceBright
+                containerColor = MaterialTheme.colorScheme.settingsCardBackground
             )
         ) {
             Column(
@@ -354,7 +380,7 @@ fun AppLockSettingsContent(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceBright
+                    containerColor = MaterialTheme.colorScheme.settingsCardBackground
                 )
             ) {
                 Row(
@@ -395,7 +421,7 @@ fun AppLockSettingsContent(
                     }
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
+                            .size(48.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.secondaryContainer)
                             .clickable {
@@ -409,9 +435,9 @@ fun AppLockSettingsContent(
                     ) {
                         Icon(
                             Icons.Default.Settings,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.app_lock_settings_title),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(22.dp)
                         )
                     }
                 }

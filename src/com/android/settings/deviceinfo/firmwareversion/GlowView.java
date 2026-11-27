@@ -454,10 +454,16 @@ public class GlowView extends View {
     }
 
     private void drawSparkles(Canvas canvas, long t) {
+        // Sparkles are bright glints on dark canvases; dark ink stars on light
+        // surfaces render as stray 1px dark specks beside the wordmark.
+        if (!mOnDark) return;
         final float p = (t % SPARKLE_MS) / (float) SPARKLE_MS;
         for (float[] s : SPARKLES) {
-            final float k = pulse(p, s[3], s[4], s[5]) * s[2] * mScale;
-            if (k <= 0f || !endsInTime(t, SPARKLE_MS, s[5])) continue;
+            final float pNorm = pulse(p, s[3], s[4], s[5]);
+            if (pNorm < 0.1f || !endsInTime(t, SPARKLE_MS, s[5])) continue;
+            final float k = pNorm * s[2] * mScale;
+            if (k <= 0f) continue;
+            mSparklePaint.setAlpha(Math.round(255f * pNorm * pNorm));
             canvas.save();
             canvas.translate(mOx + s[0] * mScale, mOy + s[1] * mScale);
             canvas.scale(k, k);

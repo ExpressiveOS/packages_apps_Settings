@@ -406,7 +406,7 @@
 
         <activity android:name="AirplaneModeVoiceActivity"
                 android:label="@string/wireless_networks_settings_title"
-                android:theme="@*android:style/Theme.DeviceDefault.Light.Voice"
+                android:theme="@style/Theme.Settings.Voice.DayNight"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.settings.VOICE_CONTROL_AIRPLANE_MODE" />
@@ -917,7 +917,7 @@
             android:exported="true"
             android:permission="android.permission.TETHER_PRIVILEGED"
             android:excludeFromRecents="true"
-            android:theme="@*android:style/Theme.DeviceDefault.Settings.Dialog.NoActionBar">
+            android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight.NoTitle">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.TETHER_UNSUPPORTED_CARRIER_UI" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1496,7 +1496,7 @@
         <activity android:name=".inputmethod.UserDictionaryAddWordActivity"
                   android:visibleToInstantApps="true"
                   android:label="@string/user_dict_settings_title"
-                  android:theme="@*android:style/Theme.DeviceDefault.Settings.Dialog.NoActionBar"
+                  android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight.NoTitle"
                   android:windowSoftInputMode="stateVisible"
                   android:noHistory="true"
                   android:exported="true"
@@ -2294,7 +2294,7 @@
         </activity>
 
         <activity android:name=".notification.zen.ZenModeVoiceActivity"
-                android:theme="@*android:style/Theme.DeviceDefault.Settings.Dialog.NoActionBar"
+                android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight.NoTitle"
                 android:exported="true"
                 android:label="@string/zen_mode_settings_title">
             <intent-filter>
@@ -3894,7 +3894,7 @@
         <activity android:name=".fuelgauge.BatterySaverModeVoiceActivity"
                 android:label="@string/power_usage_summary_title"
                 android:icon="@drawable/ic_homepage_battery"
-                android:theme="@*android:style/Theme.DeviceDefault.Light.Voice"
+                android:theme="@style/Theme.Settings.Voice.DayNight"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.settings.VOICE_CONTROL_BATTERY_SAVER_MODE" />
@@ -5306,7 +5306,7 @@
         <activity android:name=".support.SupportDashboardActivity"
                   android:label="@string/page_tab_title_support"
                   android:icon="@drawable/ic_homepage_support"
-                  android:theme="@android:style/Theme.DeviceDefault.Light.Panel"
+                  android:theme="@style/Theme.Settings.Panel.DayNight"
                   android:exported="true"
                   android:enabled="@bool/config_support_enabled">
             <intent-filter>
@@ -5901,7 +5901,7 @@
 
         <activity
             android:name=".privatespace.PrivateSpaceAuthenticationActivity"
-            android:theme="@*android:style/Theme.DeviceDefault.Settings.Dialog.NoActionBar"
+            android:theme="@style/Theme.Settings.Dialog.Expressive.DayNight.NoTitle"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.android.settings.action.OPEN_PRIVATE_SPACE_SETTINGS" />

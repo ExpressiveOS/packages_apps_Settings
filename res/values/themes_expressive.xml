@@ -90,7 +90,7 @@
     </style>
 
     <style name="Theme.Settings.Home.Expressive" parent="Theme.Settings.Expressive.NoActionBar">
-        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainer</item>
+        <item name="android:colorBackground">@color/settingslib_expressive_page_background</item>
     </style>
 
     <style name="Theme.LockSettings.Expressive" parent="Theme.SubSettings.Expressive">
@@ -127,6 +127,28 @@
         <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
         <item name="android:dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
         <item name="android:windowTitleStyle">@style/Widget.SettingsLib.DialogWindowTitle</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
+    <style name="Theme.Settings.Dialog.Expressive.DayNight.NoTitle"
+           parent="Theme.Settings.Dialog.Expressive.DayNight">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <!-- DayNight Voice & Panel themes so Dark Mode never flashes Light -->
+    <style name="Theme.Settings.Voice.DayNight"
+           parent="@*android:style/Theme.DeviceDefault.Light.Voice">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
+        <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
+    <style name="Theme.Settings.Panel.DayNight"
+           parent="@android:style/Theme.DeviceDefault.Light.Panel">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
         <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
     </style>
 </resources>

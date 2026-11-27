@@ -141,7 +141,7 @@
         <item name="dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
         <item name="android:windowTitleStyle">@style/Widget.SettingsLib.DialogWindowTitle</item>
         <item name="android:textAppearanceMedium">@style/TextAppearance.DialogMessage</item>
-        <item name="buttonBarButtonStyle">@*android:style/Widget.DeviceDefault.Button.ButtonBar.AlertDialog</item>
+        <item name="buttonBarButtonStyle">@style/Widget.SettingsLib.DialogButton</item>
     </style>
 
 

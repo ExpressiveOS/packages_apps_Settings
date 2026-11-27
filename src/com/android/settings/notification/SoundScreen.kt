@@ -81,6 +81,7 @@ open class SoundScreen : PreferenceScreenMixin, PreferenceIconProvider {
                     +NotificationVolumePreference(audioHelper) order -150
                     +AlarmVolumePreference(audioHelper) order -140
                     +AssistantVolumePreference(audioHelper) order -130
+                    +VerticalVolumeSlidersPreference() order -125
                 }
             +PreferenceCategory(
                 key = AUDIO_CATEGORY,
@@ -89,6 +90,7 @@ open class SoundScreen : PreferenceScreenMixin, PreferenceIconProvider {
             ) order -120 +=
                 {
                     +MediaControlsScreen.KEY order -100
+                    +Viper4AndroidPreference() order -95
                 }
             +PreferenceCategory(
                 key = SOUNDS_AND_VIBRATIONS_CATEGORY,

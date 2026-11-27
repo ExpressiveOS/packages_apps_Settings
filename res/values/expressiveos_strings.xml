@@ -320,4 +320,23 @@
     <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="wifi_timeout_summary_auto">WiFi will turn off after <ns0:g id="timeout_description">%1$s</ns0:g> if no network connected</string>
     <string name="x_reality_engine_mode_title">X-Reality engine</string>
     <string name="build_date">Build date</string>
+
+
+    <!-- ViPER4Android RE -->
+    <string name="viper4android_title">ViPER4Android RE</string>
+    <string name="viper4android_summary">Audio DSP effects, equalizer, and master switch</string>
+
+    <!-- Blur settings -->
+    <string name="blur_settings_title">Window blurs</string>
+    <string name="blur_strength_title">Blur strength</string>
+    <string name="blur_settings_summary">Apply frosted blur behind system panels and sheets</string>
+    <string xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2" name="blur_settings_summary_on">On (<ns0:g id="percent">%1$d</ns0:g>%%)</string>
+    <string name="blur_settings_summary_off">Off</string>
+
+    <!-- App Lock -->
+    <string name="app_lock_unlock_subtitle">Unlock App Lock settings</string>
+
+    <!-- About phone logo community affordance -->
+    <string name="expressiveos_logo_community_hint">ExpressiveOS community</string>
+    <string name="expressiveos_logo_content_description">ExpressiveOS logo. Opens the ExpressiveOS community on Telegram.</string>
 </resources>

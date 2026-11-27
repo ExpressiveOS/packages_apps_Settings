@@ -20,9 +20,31 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:key="top_level_settings">
 
+    <!-- The holiday header, which the controller (part of Expressive Studio's holiday themes)
+         adds while a holiday theme's Expressive Studio part is on -->
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:order="-160"
+        android:key="top_level_holiday_category"
+        settings:isPreferenceVisible="false"
+        settings:controller="org.expressiveos.settings.holiday.HolidayHeaderController"/>
+
+    <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:order="-150"
+        android:key="top_level_account_category"/>
+
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-140"
-        android:key="top_level_account_category"/>
+        android:key="top_level_expressiveos_category">
+        <com.android.settings.widget.HomepagePreference
+            android:fragment="org.expressiveos.settings.ExpressiveStudioSettings"
+            android:icon="@drawable/ic_homepage_expressiveos"
+            android:key="top_level_expressive_studio"
+            android:order="-160"
+            android:title="@string/studio_dashboard_title"
+            android:summary="@string/studio_dashboard_summary"
+            settings:highlightableMenuKey="@string/menu_key_expressive_studio"
+            settings:controller="org.expressiveos.settings.TopLevelExpressiveStudioPreferenceController"/>
+    </com.android.settingslib.widget.UntitledPreferenceCategory>
 
     <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-130"

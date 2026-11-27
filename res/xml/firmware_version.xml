@@ -30,6 +30,16 @@
         settings:searchable="false"
         settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionDetailPreferenceController"/>
 
+    <!-- ExpressiveOS Changelog -->
+    <Preference
+        android:key="eos_changelog"
+        android:title="@string/changelog_title"
+        android:summary="@string/changelog_summary">
+        <intent
+            android:targetPackage="com.android.settings"
+            android:targetClass="org.expressiveos.settings.fragments.about.ChangelogActivity"/>
+    </Preference>
+
     <!-- Security patch -->
     <Preference
         android:key="security_key"

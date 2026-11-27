@@ -20,7 +20,7 @@
     <style name="Theme.Settings.Home" parent="Theme.Settings.HomeBase">
         <item name="colorPrimary">@*android:color/primary_device_default_settings</item>
         <item name="colorPrimaryDark">@*android:color/primary_dark_device_default_settings</item>
-        <item name="android:colorBackground">@android:color/system_surface_container_dark</item>
+        <item name="android:colorBackground">@color/settingslib_expressive_page_background</item>
         <!-- Homepage should follow device default design, the values is same as device default theme.-->
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
@@ -41,6 +41,21 @@
         <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
         <item name="android:dialogPreferredPadding">@dimen/settingslib_expressive_space_small4</item>
         <item name="android:windowTitleStyle">@style/Widget.SettingsLib.DialogWindowTitle</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
+    <style name="Theme.Settings.Voice.DayNight"
+           parent="@android:style/Theme.Material.Voice">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
+        <item name="android:dialogCornerRadius">@dimen/settingslib_dialogCornerRadius</item>
+        <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
+    </style>
+
+    <style name="Theme.Settings.Panel.DayNight"
+           parent="@android:style/Theme.DeviceDefault.Panel">
+        <item name="android:colorAccent">@color/settingslib_materialColorPrimary</item>
+        <item name="android:colorBackground">@color/settingslib_materialColorSurfaceContainerHigh</item>
         <item name="android:alertDialogTheme">@style/Theme.DeviceDefault.AlertDialog.SettingsLib.Expressive</item>
     </style>
 

@@ -197,6 +197,7 @@ import com.android.settings.regionalpreferences.TemperatureUnitFragment;
 import com.android.settings.safetycenter.MoreSecurityPrivacyFragment;
 import com.android.settings.safetycenter.ui.SafetyCenterFragment;
 import com.android.settings.safetycenter.ui.SafetyCenterQsFragment;
+import com.android.settings.display.BlurSettings;
 import com.android.settings.security.AppLockSettingsFragment;
 import com.android.settings.security.AppLockSubSettingsFragment;
 import com.android.settings.security.ContentProtectionPreferenceFragment;
@@ -434,6 +435,7 @@ public class SettingsGateway {
             ContactsStorageSettings.class.getName(),
             ContentProtectionPreferenceFragment.class.getName(),
             AppLockSettingsFragment.class.getName(),
+            BlurSettings.class.getName(),
             AppLockSubSettingsFragment.class.getName(),
             MagnificationPreferenceFragment.class.getName(),
             FlashNotificationsPreferenceFragment.class.getName(),

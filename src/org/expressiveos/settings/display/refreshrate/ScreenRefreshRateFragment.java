@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2023 The Nameless-AOSP Project
+ * SPDX-FileCopyrightText: 2026 The ExpressiveOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.expressiveos.settings.display.refreshrate;
 
+import static android.provider.Settings.System.EXTREME_REFRESH_RATE;
 import static android.provider.Settings.System.MIN_REFRESH_RATE;
 import static android.provider.Settings.System.PEAK_REFRESH_RATE;
-
-import static android.provider.Settings.System.EXTREME_REFRESH_RATE;
 
 import android.app.settings.SettingsEnums;
 import android.content.ContentResolver;
@@ -16,11 +16,15 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.search.BaseSearchIndexProvider;
+import com.android.settingslib.search.SearchIndexable;
 
+@SearchIndexable
 public class ScreenRefreshRateFragment extends DashboardFragment {
 
     private static final String TAG = "ScreenRefreshRateFragment";
@@ -34,7 +38,7 @@ public class ScreenRefreshRateFragment extends DashboardFragment {
         private final Uri mExtremeUri = Settings.System.getUriFor(EXTREME_REFRESH_RATE);
 
         SettingsObserver() {
-            super(new Handler());
+            super(new Handler(Looper.getMainLooper()));
         }
 
         void register(ContentResolver cr) {
@@ -72,11 +76,14 @@ public class ScreenRefreshRateFragment extends DashboardFragment {
 
     @Override
     public int getMetricsCategory() {
-        return SettingsEnums.PAGE_UNKNOWN;
+        return SettingsEnums.DISPLAY;
     }
 
     @Override
     protected int getPreferenceScreenResId() {
         return R.xml.screen_refresh_rate;
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(R.xml.screen_refresh_rate);
 }
